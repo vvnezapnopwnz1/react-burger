@@ -8,21 +8,23 @@ import {
 import PropTypes from "prop-types";
 
 const BurgerIngredients = ({ data }) => {
-  const [current, setCurrent] = React.useState("one");
-
-  console.log(ingredientsStyles);
+  const [current, setCurrent] = React.useState("Булки");
 
   return (
     <section className={`${ingredientsStyles.ingerdients} mt-10 mr-10`}>
       <p className="text text_type_main-large">Соберите бургер</p>
-      <div style={{ display: "flex" }}>
-        <Tab value="one" active={current === "one"} onClick={setCurrent}>
+      <div className={ingredientsStyles.tabs}>
+        <Tab value="Булки" active={current === "Булки"} onClick={setCurrent}>
           Булки
         </Tab>
-        <Tab value="two" active={current === "two"} onClick={setCurrent}>
+        <Tab value="Соусы" active={current === "Соусы"} onClick={setCurrent}>
           Соусы
         </Tab>
-        <Tab value="three" active={current === "three"} onClick={setCurrent}>
+        <Tab
+          value="Начинки"
+          active={current === "Начинки"}
+          onClick={setCurrent}
+        >
           Начинки
         </Tab>
       </div>
@@ -33,7 +35,7 @@ const BurgerIngredients = ({ data }) => {
             <div className={ingredientsStyles.ingredientsItem}>
               <Counter count={1} size="default" extraClass="m-1" />
               <img alt={data[0].name} src={data[0].image} />
-              <div className="m-1" style={{ display: "flex" }}>
+              <div className={`${ingredientsStyles.price} m-1`}>
                 <p className="text text_type_digits-default mr-1">20</p>
                 <CurrencyIcon type="primary" />
               </div>
@@ -41,7 +43,7 @@ const BurgerIngredients = ({ data }) => {
             </div>
             <div className={ingredientsStyles.ingredientsItem}>
               <img alt={data[3].name} src={data[14].image} />
-              <div className="m-1" style={{ display: "flex" }}>
+              <div className={`${ingredientsStyles.price} m-1`}>
                 <p className="text text_type_digits-default mr-1">20</p>
                 <CurrencyIcon type="primary" />
               </div>
@@ -54,7 +56,7 @@ const BurgerIngredients = ({ data }) => {
           <div className={`${ingredientsStyles.list} pb-5`}>
             <div className={ingredientsStyles.ingredientsItem}>
               <img alt={data[3].name} src={data[3].image} />
-              <div className="m-1" style={{ display: "flex" }}>
+              <div className={`${ingredientsStyles.price} m-1`}>
                 <p className="text text_type_digits-default mr-1">20</p>
                 <CurrencyIcon type="primary" />
               </div>
@@ -62,7 +64,7 @@ const BurgerIngredients = ({ data }) => {
             </div>
             <div className={ingredientsStyles.ingredientsItem}>
               <img alt={data[6].name} src={data[6].image} />
-              <div className="m-1" style={{ display: "flex" }}>
+              <div className={`${ingredientsStyles.price} m-1`}>
                 <p className="text text_type_digits-default mr-1">20</p>
                 <CurrencyIcon type="primary" />
               </div>
@@ -73,7 +75,7 @@ const BurgerIngredients = ({ data }) => {
             <div className={ingredientsStyles.ingredientsItem}>
               <Counter count={1} size="default" extraClass="m-1" />
               <img alt={data[5].name} src={data[5].image} />
-              <div className="m-1" style={{ display: "flex" }}>
+              <div className={`${ingredientsStyles.price} m-1`}>
                 <p className="text text_type_digits-default mr-1">20</p>
                 <CurrencyIcon type="primary" />
               </div>
@@ -81,7 +83,7 @@ const BurgerIngredients = ({ data }) => {
             </div>
             <div className={ingredientsStyles.ingredientsItem}>
               <img alt={data[9].name} src={data[9].image} />
-              <div className="m-1" style={{ display: "flex" }}>
+              <div className={`${ingredientsStyles.price} m-1`}>
                 <p className="text text_type_digits-default mr-1">20</p>
                 <CurrencyIcon type="primary" />
               </div>
@@ -91,7 +93,7 @@ const BurgerIngredients = ({ data }) => {
           <div className={`${ingredientsStyles.list} mt-5`}>
             <div className={ingredientsStyles.ingredientsItem}>
               <img alt={data[5].name} src={data[5].image} />
-              <div className="m-1" style={{ display: "flex" }}>
+              <div className={`${ingredientsStyles.price} m-1`}>
                 <p className="text text_type_digits-default mr-1">20</p>
                 <CurrencyIcon type="primary" />
               </div>
@@ -99,7 +101,7 @@ const BurgerIngredients = ({ data }) => {
             </div>
             <div className={ingredientsStyles.ingredientsItem}>
               <img alt={data[9].name} src={data[9].image} />
-              <div className="m-1" style={{ display: "flex" }}>
+              <div className={`${ingredientsStyles.price} m-1`}>
                 <p className="text text_type_digits-default mr-1">20</p>
                 <CurrencyIcon type="primary" />
               </div>

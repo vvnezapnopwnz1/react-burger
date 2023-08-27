@@ -6,24 +6,24 @@ import {
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 const BurgerConstructor = ({ data }) => {
   return (
-    <section className={`${constructorStyles.list} mt-25`}>
-      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-        <div style={{ display: "flex", alignItems: "center" }}>
+    <section className="mt-25">
+      <div className={constructorStyles.list}>
+        <div className={constructorStyles.element}>
           <ConstructorElement
             extraClass="ml-10"
             type="top"
             isLocked={true}
-            text={data[0].name}
+            text={`${data[0].name} верх)`}
             price={20}
             thumbnail={data[0].image}
           />
         </div>
         <div className={constructorStyles.constructorContent}>
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div className={constructorStyles.element}>
             <DragIcon type="primary" />
             <ConstructorElement
               extraClass="ml-4"
@@ -32,7 +32,7 @@ const BurgerConstructor = ({ data }) => {
               thumbnail={data[5].image}
             />
           </div>
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div className={constructorStyles.element}>
             <DragIcon type="primary" />
             <ConstructorElement
               extraClass="ml-4"
@@ -41,7 +41,7 @@ const BurgerConstructor = ({ data }) => {
               thumbnail={data[4].image}
             />
           </div>
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div className={constructorStyles.element}>
             <DragIcon type="primary" />
             <ConstructorElement
               extraClass="ml-4"
@@ -50,7 +50,7 @@ const BurgerConstructor = ({ data }) => {
               thumbnail={data[7].image}
             />
           </div>
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div className={constructorStyles.element}>
             <DragIcon type="primary" />
             <ConstructorElement
               extraClass="ml-4"
@@ -59,7 +59,7 @@ const BurgerConstructor = ({ data }) => {
               thumbnail={data[8].image}
             />
           </div>
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div className={constructorStyles.element}>
             <DragIcon type="primary" />
             <ConstructorElement
               extraClass="ml-4"
@@ -68,7 +68,7 @@ const BurgerConstructor = ({ data }) => {
               thumbnail={data[8].image}
             />
           </div>
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div className={constructorStyles.element}>
             <DragIcon type="primary" />
             <ConstructorElement
               extraClass="ml-4"
@@ -77,7 +77,7 @@ const BurgerConstructor = ({ data }) => {
               thumbnail={data[7].image}
             />
           </div>
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div className={constructorStyles.element}>
             <DragIcon type="primary" />
             <ConstructorElement
               extraClass="ml-4"
@@ -86,7 +86,7 @@ const BurgerConstructor = ({ data }) => {
               thumbnail={data[8].image}
             />
           </div>
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div className={constructorStyles.element}>
             <DragIcon type="primary" />
             <ConstructorElement
               extraClass="ml-4"
@@ -96,12 +96,12 @@ const BurgerConstructor = ({ data }) => {
             />
           </div>
         </div>
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div className={constructorStyles.element}>
           <ConstructorElement
             extraClass="ml-10"
             type="bottom"
             isLocked={true}
-            text="Краторная булка N-200i (низ)"
+            text={`${data[0].name} (низ)`}
             price={200}
             thumbnail={data[0].image}
           />
@@ -121,10 +121,12 @@ const BurgerConstructor = ({ data }) => {
 };
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired
-  })).isRequired
-}
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      image: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};
 
 export default BurgerConstructor;

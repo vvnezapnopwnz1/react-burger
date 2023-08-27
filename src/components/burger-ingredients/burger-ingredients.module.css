@@ -18,6 +18,10 @@
     align-items: center;
 }
 
+.tabs {
+    display: flex;
+}
+
 .tabContent {
     height: 100vh;
     overflow: auto;
@@ -34,4 +38,8 @@
 
 .tabContent::-webkit-scrollbar-thumb {
     background-color: rgba(76, 76, 255, 1);
+}
+
+.price {
+    display: flex;
 }
