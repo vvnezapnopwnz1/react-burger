@@ -22,7 +22,9 @@ const AppHeader = () => {
           </p>
         </div>
       </nav>
-      <Logo />
+      <div className={headerStyles.logo}>
+        <Logo />
+      </div>
       <div className={headerStyles.profile}>
         <ProfileIcon type="secondary" />
         <p className="ml-1 text text_type_main-default text_color_inactive">

@@ -8,111 +8,53 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 
-const BurgerConstructor = ({ data }) => {
+const BurgerConstructor = ({ data, handleOrder }) => {
+  const [firstItem, ...restItems] = data;
+  const nonDragableItem = (type) => (
+    <div key={`${firstItem._id}-${type}`} className={constructorStyles.element}>
+      <ConstructorElement
+        extraClass="ml-10"
+        type={type}
+        isLocked={true}
+        text={`${firstItem.name} (низ)`}
+        price={firstItem.price}
+        thumbnail={firstItem.image}
+      />
+    </div>
+  );
   return (
-    <section className="mt-25">
-      <div className={constructorStyles.list}>
-        <div className={constructorStyles.element}>
-          <ConstructorElement
-            extraClass="ml-10"
-            type="top"
-            isLocked={true}
-            text={`${data[0].name} верх)`}
-            price={20}
-            thumbnail={data[0].image}
-          />
+    <section className="mt-25 mr-15 ml-10">
+      <div className={`${constructorStyles.listItemsAll}`}>
+        {nonDragableItem("top")}
+        <div className={constructorStyles.listItems}>
+          {restItems
+            .filter((item, index) => index !== 0 && index !== data.length - 1)
+            .map((item, index, array) => (
+              <div key={item._id} className={constructorStyles.element}>
+                <DragIcon type="primary" />
+                <ConstructorElement
+                  extraClass="ml-4 mr-2"
+                  isLocked={true}
+                  text={item.name}
+                  price={item.price}
+                  thumbnail={item.image}
+                />
+              </div>
+            ))}
         </div>
-        <div className={constructorStyles.constructorContent}>
-          <div className={constructorStyles.element}>
-            <DragIcon type="primary" />
-            <ConstructorElement
-              extraClass="ml-4"
-              text={data[5].name}
-              price={50}
-              thumbnail={data[5].image}
-            />
-          </div>
-          <div className={constructorStyles.element}>
-            <DragIcon type="primary" />
-            <ConstructorElement
-              extraClass="ml-4"
-              text={data[4].name}
-              price={50}
-              thumbnail={data[4].image}
-            />
-          </div>
-          <div className={constructorStyles.element}>
-            <DragIcon type="primary" />
-            <ConstructorElement
-              extraClass="ml-4"
-              text={data[7].name}
-              price={50}
-              thumbnail={data[7].image}
-            />
-          </div>
-          <div className={constructorStyles.element}>
-            <DragIcon type="primary" />
-            <ConstructorElement
-              extraClass="ml-4"
-              text={data[8].name}
-              price={50}
-              thumbnail={data[8].image}
-            />
-          </div>
-          <div className={constructorStyles.element}>
-            <DragIcon type="primary" />
-            <ConstructorElement
-              extraClass="ml-4"
-              text={data[8].name}
-              price={50}
-              thumbnail={data[8].image}
-            />
-          </div>
-          <div className={constructorStyles.element}>
-            <DragIcon type="primary" />
-            <ConstructorElement
-              extraClass="ml-4"
-              text={data[7].name}
-              price={50}
-              thumbnail={data[7].image}
-            />
-          </div>
-          <div className={constructorStyles.element}>
-            <DragIcon type="primary" />
-            <ConstructorElement
-              extraClass="ml-4"
-              text={data[8].name}
-              price={50}
-              thumbnail={data[8].image}
-            />
-          </div>
-          <div className={constructorStyles.element}>
-            <DragIcon type="primary" />
-            <ConstructorElement
-              extraClass="ml-4"
-              text={data[8].name}
-              price={50}
-              thumbnail={data[8].image}
-            />
-          </div>
-        </div>
-        <div className={constructorStyles.element}>
-          <ConstructorElement
-            extraClass="ml-10"
-            type="bottom"
-            isLocked={true}
-            text={`${data[0].name} (низ)`}
-            price={200}
-            thumbnail={data[0].image}
-          />
-        </div>
+        {nonDragableItem("bottom")}
       </div>
       <div className={constructorStyles.order}>
         <div>
-          <p className="text text_type_digits-medium">610</p>
+          <p className="text text_type_digits-medium mr-2">610</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button htmlType="button" type="primary" size="large">
+        <Button
+          onClick={() => handleOrder({ order: "034536" })}
+          htmlType="button"
+          type="primary"
+          size="large"
+        >
           Оформить заказ
         </Button>
       </div>
@@ -125,6 +67,7 @@ BurgerConstructor.propTypes = {
     PropTypes.shape({
       name: PropTypes.string.isRequired,
       image: PropTypes.string.isRequired,
+      price: PropTypes.number.isRequired,
     })
   ).isRequired,
 };

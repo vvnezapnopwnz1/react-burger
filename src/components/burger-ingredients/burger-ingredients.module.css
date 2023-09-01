@@ -1,11 +1,17 @@
+.ingredientsContent {
+    width: min-content;
+}
+
 .ingredientsItem {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
     text-align: center;
     height: 100%;
+    flex: 50%;
+    width: min-content;
+    /* padding: 0 5px; */
 }
 
 .ingredientsItem p {
@@ -16,6 +22,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
+    padding: 0 20px;
 }
 
 .tabs {
@@ -23,7 +31,7 @@
 }
 
 .tabContent {
-    height: 100vh;
+    height: 70vh;
     overflow: auto;
 }
 

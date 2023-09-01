@@ -15,6 +15,11 @@ header {
     align-items: center;
 }
 
+.logo {
+    position: relative;
+    right: 3%;
+}
+
 .profile {
     display: flex;
     align-items: center;

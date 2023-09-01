@@ -1,7 +1,6 @@
 .constructorContent {
     display: flex;
     flex-direction: column;
-    gap: 10px;
     height: 500px;
     overflow: auto;
 }
@@ -31,10 +30,31 @@
     margin-right: 40px;
 }
 
-.list {
+.listItemsAll {
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.listItems {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 50vh;
+    overflow: auto;
+}
+
+.listItems::-webkit-scrollbar {
+    width: 8px;
+}
+
+.listItems::-webkit-scrollbar-track {
+    background: rgba(47, 47, 55, 1);
+
+}
+
+.listItems::-webkit-scrollbar-thumb {
+    background-color: rgba(76, 76, 255, 1);
 }
 
 .element {
