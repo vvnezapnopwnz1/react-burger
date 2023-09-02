@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { createPortal } from "react-dom";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import styles from "./app.module.css";
-import { ingridientsAPI } from "../../utils/data";
+import { getIngredients } from "../../utils/burger-api";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import ModalOverlay from "../modal-overlay/modal-overlay";
+import Modal from "../modal/modal";
+import OrderDetails from "../order-details/order-details";
+import IngredientDetails from "../ingredient-details/ingredient-details";
 
 function App() {
   const [food, setFood] = useState({
@@ -17,8 +18,7 @@ function App() {
   const [modal, setModal] = useState(false);
 
   useEffect(() => {
-    fetch(ingridientsAPI)
-      .then((res) => res.json())
+    getIngredients()
       .then(({ data, success }) => setFood({ isError: false, data, success }))
       .catch(() => setFood({ isError: true }));
   }, []);
@@ -39,11 +39,19 @@ function App() {
           <BurgerConstructor data={food.data} handleOrder={handleModalChange} />
         </main>
       )}
-      {modal &&
-        createPortal(
-          <ModalOverlay handleModal={handleModalChange} modalData={modal} />,
-          document.body
-        )}
+      {modal.order && (
+        <Modal handleModal={handleModalChange}>
+          <OrderDetails order={modal.order} handleModal={handleModalChange} />
+        </Modal>
+      )}
+      {modal.item && (
+        <Modal handleModal={handleModalChange}>
+          <IngredientDetails
+            ingredient={modal.item}
+            handleModal={handleModalChange}
+          />
+        </Modal>
+      )}
     </div>
   );
 }

@@ -1,11 +1,8 @@
 import React, { useEffect } from "react";
 import modalOverlayStyles from "./modal-overlay.module.css";
-import Modal from "../modal/modal";
 import PropTypes from "prop-types";
-import OrderDetails from "../order-details/order-details";
-import IngredientDetails from "../ingredient-details/ingredient-details";
 
-function ModalOverlay({ modalData, handleModal }) {
+function ModalOverlay({ children, handleModal }) {
   const closeModal = (event) => {
     event.preventDefault();
     if (event.target === event.currentTarget) {
@@ -20,7 +17,7 @@ function ModalOverlay({ modalData, handleModal }) {
         handleModal(false);
       }
     };
-    
+
     document.addEventListener("keydown", keyDownHandler);
 
     return () => {
@@ -33,31 +30,14 @@ function ModalOverlay({ modalData, handleModal }) {
       className={modalOverlayStyles.modalOverlay}
       onClick={(e) => closeModal(e)}
     >
-      {modalData.order && (
-        <Modal>
-          <OrderDetails order={modalData.order} handleModal={handleModal} />
-        </Modal>
-      )}
-      {modalData.item && (
-        <Modal>
-          <IngredientDetails item={modalData.item} handleModal={handleModal} />
-        </Modal>
-      )}
+      {children}
     </div>
   );
 }
 
 ModalOverlay.propTypes = {
+  children: PropTypes.element.isRequired,
   handleModal: PropTypes.func.isRequired,
-  modalData: PropTypes.oneOfType([
-    PropTypes.exact({
-      order: PropTypes.string.isRequired,
-    }),
-    PropTypes.exact({
-      item: PropTypes.string.isRequired,
-    }),
-    PropTypes.bool.isRequired,
-  ]),
 };
 
 export default ModalOverlay;

@@ -7,6 +7,7 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
+import { ingredientTypes } from "../../utils/prop-types";
 
 const BurgerConstructor = ({ data, handleOrder }) => {
   const [firstItem, ...restItems] = data;
@@ -63,13 +64,8 @@ const BurgerConstructor = ({ data, handleOrder }) => {
 };
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      image: PropTypes.string.isRequired,
-      price: PropTypes.number.isRequired,
-    })
-  ).isRequired,
+  data: PropTypes.arrayOf(ingredientTypes).isRequired,
+  handleOrder: PropTypes.func.isRequired,
 };
 
 export default BurgerConstructor;

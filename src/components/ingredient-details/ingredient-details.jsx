@@ -1,20 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import ingredientDetailsStyles from "./ingredient-details.module.css";
-import { ingridientsAPI } from "../../utils/data";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
-
-function IngredientDetails({ item, handleModal }) {
-  const [ingredient, setIngredient] = useState();
-
-  useEffect(() => {
-    fetch(ingridientsAPI)
-      .then((res) => res.json())
-      .then(({ data }) =>
-        setIngredient(data.find((element) => element._id === item))
-      );
-  }, [item]);
-
+import { ingredientTypes } from "../../utils/prop-types";
+function IngredientDetails({ ingredient, handleModal }) {
   const closeModal = () => {
     handleModal(false);
   };
@@ -55,7 +44,7 @@ function IngredientDetails({ item, handleModal }) {
 
 IngredientDetails.propTypes = {
   handleModal: PropTypes.func.isRequired,
-  item: PropTypes.string.isRequired,
+  ingredient: ingredientTypes.isRequired,
 };
 
 export default IngredientDetails;
