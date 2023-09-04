@@ -7,3 +7,15 @@ const checkReponse = (res) => {
 export function getIngredients() {
   return fetch(`${NORMA_API}/ingredients`).then(checkReponse);
 }
+
+export function getOrderNumber(ingredients) {
+  return fetch(`${NORMA_API}/orders`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      ingredients,
+    }),
+  }).then(checkReponse);
+}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useMemo, useReducer } from "react";
 import constructorStyles from "./burger-constructor.module.css";
 import {
   ConstructorElement,
@@ -6,29 +6,78 @@ import {
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { IngredientsContext } from "../../services/ingredientsContext";
+import { OrderContext } from "../../services/orderContext";
 import PropTypes from "prop-types";
-import { ingredientTypes } from "../../utils/prop-types";
+import { getOrderNumber } from "../../utils/burger-api";
 
-const BurgerConstructor = ({ data, handleOrder }) => {
-  const [firstItem, ...restItems] = data;
+const BurgerConstructor = ({ handleOrderModal }) => {
+  const data = useContext(IngredientsContext);
+  const [, setOrder] = useContext(OrderContext);
+  const [firstItem] = data;
+
+  const restWithoutBuns = useMemo(
+    () => data.filter((item) => item.type !== "bun"),
+    [data]
+  );
+  const totalOrderSum = useMemo(
+    () =>
+      restWithoutBuns.reduce((acc, item) => {
+        return (acc += item.price);
+      }, firstItem.price * 2),
+    [firstItem.price, restWithoutBuns]
+  );
+
+  const orderInitialState = { order: null, count: 0 };
+
+  function orderReducer(state, { type }) {
+    switch (type) {
+      case "set":
+        const newOrder = [
+          firstItem._id,
+          ...restWithoutBuns.map((item) => item._id),
+          firstItem._id,
+        ];
+        return { order: newOrder };
+      default:
+        throw new Error(`Wrong type of action: ${type}`);
+    }
+  }
+  const [orderState, dispatchOrder] = useReducer(
+    orderReducer,
+    orderInitialState,
+    undefined
+  );
+
+  useEffect(() => {
+    dispatchOrder({ type: "set", payload: { firstItem, restWithoutBuns } });
+  }, [firstItem, restWithoutBuns]);
+
   const nonDragableItem = (type) => (
     <div key={`${firstItem._id}-${type}`} className={constructorStyles.element}>
       <ConstructorElement
         extraClass="ml-10"
         type={type}
         isLocked={true}
-        text={`${firstItem.name} (низ)`}
+        text={`${firstItem.name} (${type === "top" ? "верх" : "низ"})`}
         price={firstItem.price}
         thumbnail={firstItem.image}
       />
     </div>
   );
+
+  const handleOrderClick = () =>
+    getOrderNumber(orderState.order).then((data) => {
+      handleOrderModal(true);
+      setOrder(data.order);
+    });
+
   return (
     <section className="mt-25 mr-15 ml-10">
       <div className={`${constructorStyles.listItemsAll}`}>
         {nonDragableItem("top")}
         <div className={constructorStyles.listItems}>
-          {restItems
+          {restWithoutBuns
             .filter((item, index) => index !== 0 && index !== data.length - 1)
             .map((item, index, array) => (
               <div key={item._id} className={constructorStyles.element}>
@@ -47,11 +96,11 @@ const BurgerConstructor = ({ data, handleOrder }) => {
       </div>
       <div className={constructorStyles.order}>
         <div>
-          <p className="text text_type_digits-medium mr-2">610</p>
+          <p className="text text_type_digits-medium mr-2">{totalOrderSum}</p>
           <CurrencyIcon type="primary" />
         </div>
         <Button
-          onClick={() => handleOrder({ order: "034536" })}
+          onClick={handleOrderClick}
           htmlType="button"
           type="primary"
           size="large"
@@ -64,8 +113,7 @@ const BurgerConstructor = ({ data, handleOrder }) => {
 };
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(ingredientTypes).isRequired,
-  handleOrder: PropTypes.func.isRequired,
+  handleOrderModal: PropTypes.func.isRequired,
 };
 
 export default BurgerConstructor;

@@ -7,6 +7,8 @@ import BurgerConstructor from "../burger-constructor/burger-constructor";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import IngredientDetails from "../ingredient-details/ingredient-details";
+import { IngredientsContext } from "../../services/ingredientsContext";
+import { OrderContext } from "../../services/orderContext";
 
 function App() {
   const [food, setFood] = useState({
@@ -16,43 +18,52 @@ function App() {
   });
 
   const [modal, setModal] = useState(false);
-
+  const orderState = useState();
   useEffect(() => {
     getIngredients()
       .then(({ data, success }) => setFood({ isError: false, data, success }))
       .catch(() => setFood({ isError: true }));
   }, []);
 
+  const [order] = orderState;
+
   if (food.isError) return <div>Error</div>;
 
   const handleModalChange = (modalData) => setModal(modalData);
 
   return (
-    <div className="App">
-      <AppHeader />
-      {food.success && (
-        <main className={`${styles.main} ml-25 mr-25`}>
-          <BurgerIngredients
-            data={food.data}
-            handleDetails={handleModalChange}
-          />
-          <BurgerConstructor data={food.data} handleOrder={handleModalChange} />
-        </main>
-      )}
-      {modal.order && (
-        <Modal handleModal={handleModalChange}>
-          <OrderDetails order={modal.order} handleModal={handleModalChange} />
-        </Modal>
-      )}
-      {modal.item && (
-        <Modal handleModal={handleModalChange}>
-          <IngredientDetails
-            ingredient={modal.item}
-            handleModal={handleModalChange}
-          />
-        </Modal>
-      )}
-    </div>
+    <IngredientsContext.Provider value={food.data}>
+      <OrderContext.Provider value={orderState}>
+        <div className="App">
+          <AppHeader />
+          {food.success && (
+            <main className={`${styles.main} ml-25 mr-25`}>
+              <BurgerIngredients
+                data={food.data}
+                handleDetails={handleModalChange}
+              />
+              <BurgerConstructor
+                data={food.data}
+                handleOrderModal={handleModalChange}
+              />
+            </main>
+          )}
+          {order && modal && (
+            <Modal handleModal={handleModalChange}>
+              <OrderDetails handleModal={handleModalChange} />
+            </Modal>
+          )}
+          {modal.item && (
+            <Modal handleModal={handleModalChange}>
+              <IngredientDetails
+                ingredient={modal.item}
+                handleModal={handleModalChange}
+              />
+            </Modal>
+          )}
+        </div>
+      </OrderContext.Provider>
+    </IngredientsContext.Provider>
   );
 }
 
