@@ -6,7 +6,7 @@ function ModalOverlay({ children, handleModal }) {
   const closeModal = (event) => {
     event.preventDefault();
     if (event.target === event.currentTarget) {
-      handleModal(false);
+      handleModal({ type: "close_modal" });
     }
   };
 
@@ -14,7 +14,7 @@ function ModalOverlay({ children, handleModal }) {
     const keyDownHandler = (event) => {
       if (event.key === "Escape") {
         event.preventDefault();
-        handleModal(false);
+        handleModal({ type: "close_modal" });
       }
     };
 

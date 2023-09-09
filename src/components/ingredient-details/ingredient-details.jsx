@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { ingredientTypes } from "../../utils/prop-types";
 function IngredientDetails({ ingredient, handleModal }) {
   const closeModal = () => {
-    handleModal(false);
+    handleModal({ type: "close_modal" });
   };
 
   return (

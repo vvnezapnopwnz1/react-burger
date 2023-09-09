@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import styles from "./app.module.css";
@@ -9,6 +9,8 @@ import OrderDetails from "../order-details/order-details";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import { IngredientsContext } from "../../services/ingredientsContext";
 import { OrderContext } from "../../services/orderContext";
+import modalReducer from "../../services/reducers/modalReducer";
+import orderReducer from "../../services/reducers/orderReducer";
 
 function App() {
   const [food, setFood] = useState({
@@ -17,25 +19,37 @@ function App() {
     success: false,
   });
 
-  const [modal, setModal] = useState(false);
-  const orderState = useState();
+  const [modalState, dispatchModal] = useReducer(
+    modalReducer,
+    {
+      isOpen: false,
+      ingredient: null,
+    },
+    undefined
+  );
+  const orderInitialState = {
+    orderIngredients: null,
+    orderData: null,
+    count: 0,
+  };
+
+  const orderState = useReducer(orderReducer, orderInitialState, undefined);
   useEffect(() => {
     getIngredients()
       .then(({ data, success }) => setFood({ isError: false, data, success }))
       .catch(() => setFood({ isError: true }));
   }, []);
 
-  const [order] = orderState;
-
   if (food.isError) return <div>Error</div>;
 
-  const handleModalChange = (modalData) => setModal(modalData);
-
+  const handleModalChange = (modalData) => {
+    dispatchModal(modalData);
+  };
   return (
-    <IngredientsContext.Provider value={food.data}>
+    <div className="App">
+      <AppHeader />
       <OrderContext.Provider value={orderState}>
-        <div className="App">
-          <AppHeader />
+        <IngredientsContext.Provider value={food.data}>
           {food.success && (
             <main className={`${styles.main} ml-25 mr-25`}>
               <BurgerIngredients
@@ -48,22 +62,22 @@ function App() {
               />
             </main>
           )}
-          {order && modal && (
+          {orderState && modalState.isOrder && (
             <Modal handleModal={handleModalChange}>
               <OrderDetails handleModal={handleModalChange} />
             </Modal>
           )}
-          {modal.item && (
+          {modalState.ingredient && (
             <Modal handleModal={handleModalChange}>
               <IngredientDetails
-                ingredient={modal.item}
+                ingredient={modalState.ingredient}
                 handleModal={handleModalChange}
               />
             </Modal>
           )}
-        </div>
+        </IngredientsContext.Provider>
       </OrderContext.Provider>
-    </IngredientsContext.Provider>
+    </div>
   );
 }
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useReducer } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import constructorStyles from "./burger-constructor.module.css";
 import {
   ConstructorElement,
@@ -10,15 +10,14 @@ import { IngredientsContext } from "../../services/ingredientsContext";
 import { OrderContext } from "../../services/orderContext";
 import PropTypes from "prop-types";
 import { getOrderNumber } from "../../utils/burger-api";
-
 const BurgerConstructor = ({ handleOrderModal }) => {
-  const data = useContext(IngredientsContext);
-  const [, setOrder] = useContext(OrderContext);
-  const [firstItem] = data;
+  const ingredients = useContext(IngredientsContext);
+  const [orderState, dispatchOrder] = useContext(OrderContext);
+  const [firstItem] = ingredients;
 
   const restWithoutBuns = useMemo(
-    () => data.filter((item) => item.type !== "bun"),
-    [data]
+    () => ingredients.filter((item) => item.type !== "bun"),
+    [ingredients]
   );
   const totalOrderSum = useMemo(
     () =>
@@ -28,30 +27,14 @@ const BurgerConstructor = ({ handleOrderModal }) => {
     [firstItem.price, restWithoutBuns]
   );
 
-  const orderInitialState = { order: null, count: 0 };
-
-  function orderReducer(state, { type }) {
-    switch (type) {
-      case "set":
-        const newOrder = [
-          firstItem._id,
-          ...restWithoutBuns.map((item) => item._id),
-          firstItem._id,
-        ];
-        return { order: newOrder };
-      default:
-        throw new Error(`Wrong type of action: ${type}`);
-    }
-  }
-  const [orderState, dispatchOrder] = useReducer(
-    orderReducer,
-    orderInitialState,
-    undefined
-  );
-
   useEffect(() => {
-    dispatchOrder({ type: "set", payload: { firstItem, restWithoutBuns } });
-  }, [firstItem, restWithoutBuns]);
+    const orderIngredients = [
+      firstItem._id,
+      ...restWithoutBuns.map((item) => item._id),
+      firstItem._id,
+    ];
+    dispatchOrder({ type: "set_ingredients", payload: { orderIngredients } });
+  }, [dispatchOrder, firstItem, restWithoutBuns]);
 
   const nonDragableItem = (type) => (
     <div key={`${firstItem._id}-${type}`} className={constructorStyles.element}>
@@ -66,11 +49,12 @@ const BurgerConstructor = ({ handleOrderModal }) => {
     </div>
   );
 
-  const handleOrderClick = () =>
-    getOrderNumber(orderState.order).then((data) => {
-      handleOrderModal(true);
-      setOrder(data.order);
+  const handleOrderClick = () => {
+    getOrderNumber(orderState.orderIngredients).then((data) => {
+      dispatchOrder({ type: "set_order", payload: { orderData: data.order } });
+      handleOrderModal({ type: "order_details" });
     });
+  };
 
   return (
     <section className="mt-25 mr-15 ml-10">
@@ -78,7 +62,9 @@ const BurgerConstructor = ({ handleOrderModal }) => {
         {nonDragableItem("top")}
         <div className={constructorStyles.listItems}>
           {restWithoutBuns
-            .filter((item, index) => index !== 0 && index !== data.length - 1)
+            .filter(
+              (item, index) => index !== 0 && index !== ingredients.length - 1
+            )
             .map((item, index, array) => (
               <div key={item._id} className={constructorStyles.element}>
                 <DragIcon type="primary" />

@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 
 function OrderDetails({ handleModal }) {
   const closeModal = () => {
-    handleModal(false);
+    handleModal({ type: "close_modal" });
   };
   const [order] = useContext(OrderContext);
   return (
@@ -20,7 +20,7 @@ function OrderDetails({ handleModal }) {
         <p
           className={`${orderDetailsStyles.order} text text_type_digits-large`}
         >
-          {order.number}
+          {order.orderData.number}
         </p>
         <p className="text text_type_main-medium mt-8 mb-15">
           идентификатор заказа
