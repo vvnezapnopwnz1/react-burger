@@ -1,0 +1,63 @@
+.constructorContent {
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    overflow: auto;
+}
+
+.constructorContent::-webkit-scrollbar {
+    width: 8px;
+}
+
+.constructorContent::-webkit-scrollbar-track {
+    background: rgba(47, 47, 55, 1);
+
+}
+
+.constructorContent::-webkit-scrollbar-thumb {
+    background-color: rgba(76, 76, 255, 1);
+}
+
+.order {
+    display: flex;
+    margin-top: 40px;
+    justify-content: flex-end;
+}
+
+.order div {
+    display: flex;
+    align-items: center;
+    margin-right: 40px;
+}
+
+.listItemsAll {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.listItems {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 50vh;
+    overflow: auto;
+}
+
+.listItems::-webkit-scrollbar {
+    width: 8px;
+}
+
+.listItems::-webkit-scrollbar-track {
+    background: rgba(47, 47, 55, 1);
+
+}
+
+.listItems::-webkit-scrollbar-thumb {
+    background-color: rgba(76, 76, 255, 1);
+}
+
+.element {
+    display: flex;
+    align-items: center;
+}
