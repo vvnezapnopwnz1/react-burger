@@ -1,11 +1,14 @@
 import React from "react";
 import ingredientDetailsStyles from "./ingredient-details.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
-import { ingredientTypes } from "../../utils/prop-types";
-function IngredientDetails({ ingredient, handleModal }) {
-  const closeModal = () => {
-    handleModal({ type: "close_modal" });
+import { useDispatch, useSelector } from "react-redux";
+import { closeModal } from "../../services/reducers/modalReducer";
+function IngredientDetails() {
+  const dispatch = useDispatch();
+  const ingredient = useSelector((state) => state.modal.ingredient);
+
+  const handleCloseModal = () => {
+    dispatch(closeModal());
   };
 
   return (
@@ -13,7 +16,7 @@ function IngredientDetails({ ingredient, handleModal }) {
       <div className={ingredientDetailsStyles.ingredient}>
         <div className={ingredientDetailsStyles.ingredientHeader}>
           <p className="text text_type_main-medium">Детали ингредиента</p>
-          <CloseIcon type="primary" onClick={closeModal} />
+          <CloseIcon type="primary" onClick={handleCloseModal} />
         </div>
         <img src={ingredient.image_large} alt={ingredient.name} />
         <p className="text text_type_main-small mt-4 mb-8">{ingredient.name}</p>
@@ -42,9 +45,6 @@ function IngredientDetails({ ingredient, handleModal }) {
   );
 }
 
-IngredientDetails.propTypes = {
-  handleModal: PropTypes.func.isRequired,
-  ingredient: ingredientTypes.isRequired,
-};
+IngredientDetails.propTypes = {};
 
 export default IngredientDetails;

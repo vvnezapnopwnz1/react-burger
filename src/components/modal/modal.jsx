@@ -4,9 +4,9 @@ import modalStyles from "./modal.module.css";
 import PropTypes from "prop-types";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 
-export function Modal({ children, handleModal }) {
+export function Modal({ children }) {
   return createPortal(
-    <ModalOverlay handleModal={handleModal}>
+    <ModalOverlay>
       <div className={modalStyles.modal}>{children}</div>
     </ModalOverlay>,
     document.body
@@ -14,7 +14,6 @@ export function Modal({ children, handleModal }) {
 }
 
 Modal.propTypes = {
-  handleModal: PropTypes.func.isRequired,
   children: PropTypes.element.isRequired,
 };
 

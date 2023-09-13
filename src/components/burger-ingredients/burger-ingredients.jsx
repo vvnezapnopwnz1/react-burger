@@ -1,43 +1,47 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import ingredientsStyles from "./burger-ingredients.module.css";
-import {
-  Tab,
-  CurrencyIcon,
-  Counter,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
-import { ingredientTypes } from "../../utils/prop-types";
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useSelector, useDispatch } from "react-redux";
+import { setIngredientDetails } from "../../services/reducers/modalReducer";
 
-const BurgerIngredients = ({ data, handleDetails }) => {
+import TabItem from "../tab-item/tab-item";
+
+const BurgerIngredients = () => {
   const [current, setCurrent] = React.useState("Булки");
-  const [buns, sauces] = useMemo(() => {
-    const buns = data.filter((item) => item.type === "bun");
-    const sauces = data.filter((item) => item.type === "sauce");
+  const ingredients = useSelector((state) => state.ingredients.items);
+  const tabRef = useRef();
+  const [buns, sauces, main] = useMemo(() => {
+    const buns = ingredients.filter((item) => item.type === "bun");
+    const sauces = ingredients.filter((item) => item.type === "sauce");
+    const main = ingredients.filter((item) => item.type === "main");
 
-    return [buns, sauces];
-  }, [data]);
+    return [buns, sauces, main];
+  }, [ingredients]);
 
-  const tabContent = (ingredients) =>
-    ingredients.map((item, index) => (
-      <div
-        onClick={() =>
-          handleDetails({
-            type: "ingredient_details",
-            ingredient: item,
-          })
-        }
-        key={item._id}
-        className={ingredientsStyles.ingredientsItem}
-      >
-        {index === 0 && <Counter count={1} size="default" extraClass="m-1" />}
-        <img alt={item.name} src={item.image} />
-        <div className={`${ingredientsStyles.price} m-1`}>
-          <p className="text text_type_digits-default mr-1">{item.price}</p>
-          <CurrencyIcon type="primary" />
-        </div>
-        <p className="text text_type_main-default">{item.name}</p>
-      </div>
+  const dispatch = useDispatch();
+
+  const handleDetails = (item) => {
+    dispatch(setIngredientDetails(item));
+  };
+
+  const tabContent = (ingredients) => {
+    return ingredients.map((item, index) => (
+      <TabItem key={index} item={item} handleDetails={handleDetails} />
     ));
+  };
+
+  const handleScroll = (event) => {
+    for (let tab of event.target.children) {
+      const tabClientRect = tab.getBoundingClientRect();
+      if (
+        tabClientRect.height / 2 - tabClientRect.top > 0 &&
+        tabClientRect.height / 2 - tabClientRect.top <
+          tabRef.current.getBoundingClientRect().top
+      ) {
+        setCurrent(tab.id);
+      }
+    }
+  };
 
   return (
     <section className={`${ingredientsStyles.ingredientsContent} mt-10 ml-10`}>
@@ -59,17 +63,25 @@ const BurgerIngredients = ({ data, handleDetails }) => {
           </Tab>
         </div>
       </div>
-      <div className={ingredientsStyles.tabContent}>
-        <div>
+      <div
+        className={ingredientsStyles.tabContent}
+        ref={tabRef}
+        onScroll={handleScroll}
+      >
+        <div id="Булки">
           <p className="text text_type_main-medium p-10">Булки</p>
-          <div className={ingredientsStyles.list}>
-            {tabContent(buns)}
-          </div>
+          <div className={ingredientsStyles.list}>{tabContent(buns)}</div>
         </div>
-        <div>
+        <div id="Соусы">
           <p className="text text_type_main-medium p-10">Соусы</p>
           <div className={`${ingredientsStyles.list} pb-5`}>
             {tabContent(sauces)}
+          </div>
+        </div>
+        <div id="Начинки">
+          <p className="text text_type_main-medium p-10">Начинки</p>
+          <div className={`${ingredientsStyles.list} pb-5`}>
+            {tabContent(main)}
           </div>
         </div>
       </div>
@@ -77,9 +89,6 @@ const BurgerIngredients = ({ data, handleDetails }) => {
   );
 };
 
-BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientTypes).isRequired,
-  handleDetails: PropTypes.func.isRequired,
-};
+BurgerIngredients.propTypes = {};
 
 export default BurgerIngredients;

@@ -1,82 +1,47 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useEffect } from "react";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import styles from "./app.module.css";
-import { getIngredients } from "../../utils/burger-api";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import { IngredientsContext } from "../../services/ingredientsContext";
-import { OrderContext } from "../../services/orderContext";
-import modalReducer from "../../services/reducers/modalReducer";
-import orderReducer from "../../services/reducers/orderReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchIngredients } from "../../services/reducers/ingredientsReducer";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
 
 function App() {
-  const [food, setFood] = useState({
-    isError: false,
-    data: [],
-    success: false,
-  });
+  const dispatch = useDispatch();
+  const ingredients = useSelector((state) => state.ingredients);
+  const order = useSelector((state) => state.order.orderData);
+  const modal = useSelector((state) => state.modal);
 
-  const [modalState, dispatchModal] = useReducer(
-    modalReducer,
-    {
-      isOpen: false,
-      ingredient: null,
-    },
-    undefined
-  );
-  const orderInitialState = {
-    orderIngredients: null,
-    orderData: null,
-    count: 0,
-  };
-
-  const orderState = useReducer(orderReducer, orderInitialState, undefined);
   useEffect(() => {
-    getIngredients()
-      .then(({ data, success }) => setFood({ isError: false, data, success }))
-      .catch(() => setFood({ isError: true }));
-  }, []);
+    dispatch(fetchIngredients());
+  }, [dispatch]);
 
-  if (food.isError) return <div>Error</div>;
-
-  const handleModalChange = (modalData) => {
-    dispatchModal(modalData);
-  };
   return (
     <div className="App">
       <AppHeader />
-      <OrderContext.Provider value={orderState}>
-        <IngredientsContext.Provider value={food.data}>
-          {food.success && (
-            <main className={`${styles.main} ml-25 mr-25`}>
-              <BurgerIngredients
-                data={food.data}
-                handleDetails={handleModalChange}
-              />
-              <BurgerConstructor
-                data={food.data}
-                handleOrderModal={handleModalChange}
-              />
-            </main>
-          )}
-          {orderState && modalState.isOrder && (
-            <Modal handleModal={handleModalChange}>
-              <OrderDetails handleModal={handleModalChange} />
-            </Modal>
-          )}
-          {modalState.ingredient && (
-            <Modal handleModal={handleModalChange}>
-              <IngredientDetails
-                ingredient={modalState.ingredient}
-                handleModal={handleModalChange}
-              />
-            </Modal>
-          )}
-        </IngredientsContext.Provider>
-      </OrderContext.Provider>
+      {ingredients.items && (
+        <DndProvider backend={HTML5Backend}>
+          <main className={`${styles.main} ml-25 mr-25`}>
+            <BurgerIngredients />
+            <BurgerConstructor />
+          </main>
+        </DndProvider>
+      )}
+      {order && modal.isOrder && (
+        <Modal>
+          <OrderDetails />
+        </Modal>
+      )}
+      {modal.ingredient && (
+        <Modal>
+          <IngredientDetails />
+        </Modal>
+      )}
     </div>
   );
 }

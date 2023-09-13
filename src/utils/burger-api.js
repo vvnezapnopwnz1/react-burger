@@ -4,18 +4,27 @@ const checkReponse = (res) => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-export function getIngredients() {
-  return fetch(`${NORMA_API}/ingredients`).then(checkReponse);
+export async function getIngredients() {
+  const res = await fetch(`${NORMA_API}/ingredients`);
+  return checkReponse(res);
 }
 
-export function getOrderNumber(ingredients) {
-  return fetch(`${NORMA_API}/orders`, {
+export async function getOrderNumber(constructorIngredients, bun) {
+  const ingredientsIds = [
+    bun._id,
+    ...constructorIngredients.flatMap((ingredient) =>
+      Array.from(new Array(ingredient.count), () => ingredient._id)
+    ),
+    bun._id,
+  ];
+  const res = await fetch(`${NORMA_API}/orders`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      ingredients,
+      ingredients: ingredientsIds,
     }),
-  }).then(checkReponse);
+  });
+  return checkReponse(res);
 }
