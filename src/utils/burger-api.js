@@ -9,14 +9,7 @@ export async function getIngredients() {
   return checkReponse(res);
 }
 
-export async function getOrderNumber(constructorIngredients, bun) {
-  const ingredientsIds = [
-    bun._id,
-    ...constructorIngredients.flatMap((ingredient) =>
-      Array.from(new Array(ingredient.count), () => ingredient._id)
-    ),
-    bun._id,
-  ];
+export async function getOrderNumber(ingredientsIds) {
   const res = await fetch(`${NORMA_API}/orders`, {
     method: "POST",
     headers: {

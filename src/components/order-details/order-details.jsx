@@ -12,10 +12,10 @@ function OrderDetails() {
     dispatch(closeModal());
   };
 
-  const order = useSelector((state) => state.order.orderData);
+  const orderData = useSelector((state) => state.order.orderData);
 
   return (
-    order && (
+    orderData && (
       <div className={orderDetailsStyles.details}>
         <div>
           <CloseIcon type="primary" onClick={handleCloseModal} />
@@ -23,7 +23,7 @@ function OrderDetails() {
         <p
           className={`${orderDetailsStyles.order} text text_type_digits-large`}
         >
-          {order.number}
+          {orderData.order.number}
         </p>
         <p className="text text_type_main-medium mt-8 mb-15">
           идентификатор заказа

@@ -9,11 +9,12 @@ import PropTypes from "prop-types";
 import { ingredientTypes } from "../../utils/prop-types";
 
 const TabItem = ({ item, handleDetails }) => {
-  const count = useSelector(
-    (state) =>
-      state.order.constructorIngredients.find(
-        (ingredient) => ingredient._id === item._id
-      )?.count
+  const count = useSelector((state) =>
+    item.type !== "bun"
+      ? state.order.constructorIngredients.find(
+          (ingredient) => ingredient._id === item._id
+        )?.count
+      : state.order?.bun?._id === item._id && state.order.bun.count
   );
   const [, drag, preview] = useDrag({
     type: "items",

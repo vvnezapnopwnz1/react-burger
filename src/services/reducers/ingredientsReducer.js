@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getIngredients } from "../../utils/burger-api";
 
 export const fetchIngredients = createAsyncThunk(
-  "ingredients/fetchAll",
+  "ingredients",
   async () => {
     const response = await getIngredients();
     return response.data;

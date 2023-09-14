@@ -29,7 +29,9 @@ const OrderIngredient = ({ item, index }) => {
           }
           return ingredient;
         })
-        .filter((item) => item.count > 0),
+        .filter(
+          (ingredient) => item.uuid !== ingredient.uuid && item.count > 0
+        ),
     ];
     dispatch(setIngredients({ orderIngredients: newOrderIngredients }));
   };

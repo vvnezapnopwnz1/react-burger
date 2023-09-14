@@ -5,16 +5,17 @@ import {
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { getOrderNumber } from "../../utils/burger-api";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setIngredients,
-  setOrder,
   setBun,
+  fetchOrder,
 } from "../../services/reducers/orderReducer";
 import { setOrderDetails } from "../../services/reducers/modalReducer";
 import { useDrop } from "react-dnd";
 import OrderIngredient from "../order-ingredient/order-ingredient";
+import { v4 as uuidv4 } from "uuid";
+
 const BurgerConstructor = () => {
   const ingredients = useSelector((state) => state.ingredients.items);
   const order = useSelector((state) => state.order);
@@ -29,7 +30,7 @@ const BurgerConstructor = () => {
 
   useEffect(() => {
     const orderIngredients = restWithoutBuns && [
-      ...restWithoutBuns.map((item) => ({ ...item, count: 1 })),
+      ...restWithoutBuns.map((item) => ({ ...item, count: 1, uuid: uuidv4() })),
     ];
     firstItem && dispatch(setBun({ bun: { ...firstItem, count: 2 } }));
     dispatch(setIngredients({ orderIngredients }));
@@ -52,17 +53,19 @@ const BurgerConstructor = () => {
     );
 
   const handleOrderClick = () => {
-    getOrderNumber(order.constructorIngredients, order.bun).then((data) => {
-      dispatch(setOrder(data.order));
-      dispatch(setOrderDetails());
-    });
+    const { bun, constructorIngredients } = order;
+    dispatch(fetchOrder({ constructorIngredients, bun }))
+      .unwrap()
+      .then(() => {
+        dispatch(setOrderDetails());
+      });
   };
   const [, drop] = useDrop(
     () => ({
       accept: "items",
       drop(item) {
         if (item.type === "bun") {
-          dispatch(setBun({ bun: item }));
+          dispatch(setBun({ bun: { ...item, count: 2 } }));
           return;
         }
         const newOrderIngredients = [
@@ -78,13 +81,23 @@ const BurgerConstructor = () => {
             (ingredient) => ingredient._id === item._id
           )
         ) {
-          dispatch(setIngredients({ orderIngredients: newOrderIngredients }));
+          dispatch(
+            setIngredients({
+              orderIngredients: newOrderIngredients.concat({
+                ...newOrderIngredients.find(
+                  (ingredient) => ingredient._id === item._id
+                ),
+                uuid: uuidv4(),
+              }),
+            })
+          );
         } else {
           dispatch(
             setIngredients({
               orderIngredients: newOrderIngredients.concat({
                 ...item,
                 count: 1,
+                uuid: uuidv4(),
               }),
             })
           );
@@ -115,7 +128,7 @@ const BurgerConstructor = () => {
         <div className={constructorStyles.listItems}>
           {order.constructorIngredients &&
             order.constructorIngredients.map((item, index) => (
-              <OrderIngredient key={item._id} item={item} index={index} />
+              <OrderIngredient key={uuidv4()} item={item} index={index} />
             ))}
         </div>
         {nonDragableItem("bottom")}

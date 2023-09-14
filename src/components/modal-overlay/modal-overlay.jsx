@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import modalOverlayStyles from "./modal-overlay.module.css";
 import PropTypes from "prop-types";
 import { closeModal } from "../../services/reducers/modalReducer";
@@ -13,21 +13,6 @@ function ModalOverlay({ children }) {
       dispatch(closeModal());
     }
   };
-
-  useEffect(() => {
-    const keyDownHandler = (event) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        dispatch(closeModal());
-      }
-    };
-
-    document.addEventListener("keydown", keyDownHandler);
-
-    return () => {
-      document.removeEventListener("keydown", keyDownHandler);
-    };
-  }, [dispatch]);
 
   return (
     <div

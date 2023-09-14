@@ -16,7 +16,6 @@ function App() {
   const ingredients = useSelector((state) => state.ingredients);
   const order = useSelector((state) => state.order.orderData);
   const modal = useSelector((state) => state.modal);
-
   useEffect(() => {
     dispatch(fetchIngredients());
   }, [dispatch]);
