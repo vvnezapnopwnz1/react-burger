@@ -1,0 +1,80 @@
+.ingredient {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.ingredientHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ingredient>p {
+    align-self: center;
+}
+
+.ingredientProps {
+    display: flex;
+    gap: 20px;
+}
+
+.ingredientProps div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.formWrapper {
+    display: flex;
+    align-items: center;
+    height: 80vh;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.button {
+    width: 60%;
+}
+
+.registerButton {
+    width: 80%;
+}
+
+.profile {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.profileContent {
+    display: flex;
+}
+
+.profileNav {
+    display: flex;
+    flex-direction: column;
+}
+
+.profileFormWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.profileForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}

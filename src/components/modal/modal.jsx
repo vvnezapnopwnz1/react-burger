@@ -12,6 +12,7 @@ export function Modal({ children }) {
     const keyDownHandler = (event) => {
       if (event.key === "Escape") {
         event.preventDefault();
+        window.history.replaceState(null, "", "/");
         dispatch(closeModal());
       }
     };

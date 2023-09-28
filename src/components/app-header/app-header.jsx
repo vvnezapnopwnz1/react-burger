@@ -1,5 +1,6 @@
 import React from "react";
 import headerStyles from "./app-header.module.css";
+import { Link, NavLink } from "react-router-dom";
 import {
   Logo,
   BurgerIcon,
@@ -13,13 +14,29 @@ const AppHeader = () => {
       <nav className={headerStyles.nav}>
         <div className="mr-5">
           <BurgerIcon type="primary" />
-          <p className="ml-1 text text_type_main-default">Конструктор</p>
+          <NavLink
+          to="/"
+            className={({ isActive }) =>
+              `ml-1 text text_type_main-default ${
+                !isActive && "text_color_inactive"
+              }`
+            }
+          >
+            Конструктор
+          </NavLink>
         </div>
         <div className="ml-5">
           <ListIcon type="secondary" />
-          <p className="ml-1 text text_type_main-default text_color_inactive">
+          <NavLink
+            className={({ isActive }) =>
+              `ml-1 text text_type_main-default ${
+                !isActive && "text_color_inactive"
+              }`
+            }
+            to="/orders"
+          >
             Лента заказов
-          </p>
+          </NavLink>
         </div>
       </nav>
       <div className={headerStyles.logo}>
@@ -27,9 +44,16 @@ const AppHeader = () => {
       </div>
       <div className={headerStyles.profile}>
         <ProfileIcon type="secondary" />
-        <p className="ml-1 text text_type_main-default text_color_inactive">
+        <NavLink
+          to="/profile"
+          className={({ isActive }) =>
+            `ml-1 text text_type_main-default ${
+              !isActive && "text_color_inactive"
+            }`
+          }
+        >
           Личный кабинет
-        </p>
+        </NavLink>
       </div>
     </header>
   );

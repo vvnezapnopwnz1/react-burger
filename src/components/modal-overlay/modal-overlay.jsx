@@ -10,6 +10,7 @@ function ModalOverlay({ children }) {
   const handleCloseModal = (event) => {
     event.preventDefault();
     if (event.target === event.currentTarget) {
+      window.history.replaceState(null, "", "/");
       dispatch(closeModal());
     }
   };

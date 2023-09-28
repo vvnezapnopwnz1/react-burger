@@ -1,30 +1,25 @@
 import React from "react";
-import ingredientDetailsStyles from "./ingredient-details.module.css";
-import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
-import { closeModal } from "../../services/reducers/modalReducer";
-function IngredientDetails() {
-  const dispatch = useDispatch();
-  const ingredient = useSelector((state) => state.modal.ingredient);
-  window.history.replaceState(
-    null,
-    ingredient.name,
-    `/ingredients/${ingredient._id}`
-  );
-  const handleCloseModal = () => {
-    window.history.replaceState(null, "", "/");
-    dispatch(closeModal());
-  };
+import ingredientDetailsStyles from "./home.module.css";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
+export function IngredientPage() {
+  let { pathname } = useLocation();
+  const ingredient = useSelector((state) =>
+    state.ingredients.items.find(
+      (item) => item._id === pathname.replace("/ingredients/", "")
+    )
+  );
   return (
     ingredient && (
       <div className={ingredientDetailsStyles.ingredient}>
         <div className={ingredientDetailsStyles.ingredientHeader}>
-          <p className="text text_type_main-medium">Детали ингредиента</p>
-          <CloseIcon type="primary" onClick={handleCloseModal} />
+          <p className="mt-20 text text_type_main-large">Детали ингредиента</p>
         </div>
         <img src={ingredient.image_large} alt={ingredient.name} />
-        <p className="text text_type_main-small mt-4 mb-8">{ingredient.name}</p>
+        <p className="text text_type_main-medium mt-4 mb-8">
+          {ingredient.name}
+        </p>
         <div
           className={`${ingredientDetailsStyles.ingredientProps} text text_type_main-small text_color_inactive`}
         >
@@ -49,7 +44,3 @@ function IngredientDetails() {
     )
   );
 }
-
-IngredientDetails.propTypes = {};
-
-export default IngredientDetails;
