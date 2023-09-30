@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from "react";
-import { Navigate, Link } from "react-router-dom";
+import React, { useCallback } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import {
   Input,
   PasswordInput,
@@ -8,55 +8,55 @@ import {
 import styles from "./home.module.css";
 import { registerUser } from "../services/reducers/userReducer";
 import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "../hooks/useForm";
 
 export function RegisterPage() {
-  const [form, setValue] = useState({ email: "", password: "", name: "" });
-  const user = useSelector((state) => state.auth.userData);
+  const { values, handleChange } = useForm({});
+  const navigate = useNavigate();
 
-  const onChange = (e) => {
-    setValue({ ...form, [e.target.name]: e.target.value });
-  };
   const dispatch = useDispatch();
   let register = useCallback(
     async (e) => {
       e.preventDefault();
-      dispatch(registerUser(form));
+      dispatch(registerUser(values))
+        .unwrap()
+        .then(() => {
+          navigate("/");
+        })
+        .catch((e) => console.log(e));
     },
-    [form, dispatch]
+    [dispatch, values, navigate]
   );
-  if (user) {
-    return <Navigate to={"/"} />;
-  }
+
   return (
     <div className={styles.formWrapper}>
-      <form className={`${styles.form} mb-25`}>
+      <form className={`${styles.form} mb-25`} onSubmit={register}>
         <p className="text text_type_main-medium mb-2">Регистрация</p>
         <Input
-          onChange={onChange}
+          onChange={handleChange}
           extraClass="mb-2"
           type="text"
           placeholder="Имя"
           name="name"
-          value={form.name}
+          value={values.name || ""}
         />
         <Input
-          onChange={onChange}
+          onChange={handleChange}
           extraClass="mb-2"
           type="text"
           placeholder="E-mail"
           name="email"
-          value={form.email}
+          value={values.email || ""}
         />
         <PasswordInput
-          onChange={onChange}
+          onChange={handleChange}
           name={"password"}
           extraClass="mb-2"
-          value={form.password}
+          value={values.password || ""}
         />
         <Button
-          onClick={register}
           extraClass={styles.registerButton}
-          htmlType="button"
+          htmlType="submit"
           type="primary"
           size="medium"
         >

@@ -7,8 +7,13 @@ import { useDrag, DragPreviewImage } from "react-dnd";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { ingredientTypes } from "../../utils/prop-types";
+import { Link, useLocation } from "react-router-dom";
 
 const TabItem = ({ item, handleDetails }) => {
+  const location = useLocation();
+
+  const ingredientId = item["_id"];
+
   const count = useSelector((state) =>
     item.type !== "bun"
       ? state.order.constructorIngredients.find(
@@ -25,7 +30,11 @@ const TabItem = ({ item, handleDetails }) => {
   });
 
   return (
-    <>
+    <Link
+      key={ingredientId}
+      to={`/ingredients/${ingredientId}`}
+      state={{ background: location }}
+    >
       <DragPreviewImage connect={preview} src={item.image} />
       <div
         ref={drag}
@@ -43,7 +52,7 @@ const TabItem = ({ item, handleDetails }) => {
         </div>
         <p className="text text_type_main-default">{item.name}</p>
       </div>
-    </>
+    </Link>
   );
 };
 TabItem.propTypes = {

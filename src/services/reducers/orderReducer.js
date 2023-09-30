@@ -10,13 +10,13 @@ const initialState = {
 };
 export const fetchOrder = createAsyncThunk(
   "order",
-  async ({ constructorIngredients, bun, token }) => {
+  async ({ constructorIngredients, bun }) => {
     const ingredientsIds = [
       bun._id,
       ...constructorIngredients.map((ingredient) => ingredient._id),
       bun._id,
     ];
-    return await getOrderNumber(ingredientsIds, token);
+    return await getOrderNumber(ingredientsIds);
   }
 );
 

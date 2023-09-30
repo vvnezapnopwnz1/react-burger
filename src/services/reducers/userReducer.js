@@ -5,12 +5,10 @@ import {
   logout,
   getUserData,
   editUserData,
-  refreshToken,
 } from "../../utils/burger-api";
 
 const initialState = {
   userData: null,
-  accessToken: null,
   loading: "idle",
   error: null,
 };
@@ -26,23 +24,20 @@ export const registerUser = createAsyncThunk(
 export const logoutUser = createAsyncThunk("auth/logout", async () => {
   return await logout();
 });
-export const getUser = createAsyncThunk("auth/getUser", async (token) => {
-  return await getUserData(token);
-});
+export const getUser = createAsyncThunk(
+  "auth/getUser",
+  async (_, { getState }) => {
+    return await getUserData();
+  }
+);
 
 export const editUser = createAsyncThunk(
   "auth/editUser",
-  async ({ token, field, value }) => {
-    return await editUserData(token, field, value);
+  async ({ field, value }) => {
+    return await editUserData(field, value);
   }
 );
 
-export const refreshUserToken = createAsyncThunk(
-  "auth/refreshUserToken",
-  async () => {
-    return await refreshToken();
-  }
-);
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -52,7 +47,6 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = "idle";
         state.userData = action.payload.user;
-        state.accessToken = action.payload.accessToken;
       })
       .addCase(loginUser.pending, (state) => {
         state.loading = "pending";
@@ -64,7 +58,6 @@ const authSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = "idle";
         state.userData = action.payload.user;
-        state.accessToken = action.payload.accessToken;
       })
       .addCase(registerUser.pending, (state) => {
         state.loading = "pending";
@@ -92,14 +85,14 @@ const authSlice = createSlice({
         state.loading = "idle";
         state.error = action.error;
       })
-      .addCase(refreshUserToken.fulfilled, (state, action) => {
+      .addCase(editUser.fulfilled, (state, action) => {
         state.loading = "idle";
-        state.accessToken = action.payload.accessToken;
+        state.userData = action.payload.user;
       })
-      .addCase(refreshUserToken.pending, (state) => {
+      .addCase(editUser.pending, (state) => {
         state.loading = "pending";
       })
-      .addCase(refreshUserToken.rejected, (state, action) => {
+      .addCase(editUser.rejected, (state, action) => {
         state.loading = "idle";
         state.error = action.error;
       });

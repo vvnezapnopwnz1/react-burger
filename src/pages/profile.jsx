@@ -7,11 +7,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./home.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  editUser,
-  getUser,
-  logoutUser,
-} from "../services/reducers/userReducer";
+import { editUser, logoutUser } from "../services/reducers/userReducer";
 
 export function ProfilePage() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -24,11 +20,7 @@ export function ProfilePage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const { userData, accessToken } = useSelector((state) => state.auth);
-
-  useEffect(() => {
-    dispatch(getUser(accessToken));
-  }, [dispatch, accessToken]);
+  const { userData } = useSelector((state) => state.auth);
 
   useEffect(() => {
     setForm(userData);
@@ -47,10 +39,9 @@ export function ProfilePage() {
     setForm(userData);
   };
 
-  const handleSaveClick = () => {
-    dispatch(
-      editUser({ token: accessToken, value: form[isEditing], field: isEditing })
-    ).unwrap();
+  const handleSaveClick = (e) => {
+    e.preventDefault();
+    dispatch(editUser({ value: form[isEditing], field: isEditing })).unwrap();
     setIsEditing("");
   };
   return (
@@ -87,7 +78,10 @@ export function ProfilePage() {
             </p>
           </div>
           <div className={`${styles.profileFormWrapper} mb-15 ml-30`}>
-            <form className={`${styles.profileForm} mb-5`}>
+            <form
+              className={`${styles.profileForm} mb-5`}
+              onSubmit={handleSaveClick}
+            >
               <Input
                 onChange={onChange}
                 icon={isEditing === "name" ? "CloseIcon" : "EditIcon"}
@@ -114,30 +108,24 @@ export function ProfilePage() {
                 name={"password"}
                 value={form.password ?? ""}
               />
+              {isEditing !== "" && (
+                <div className="mt-3 ml-30">
+                  <Button
+                    onClick={handleCancelClick}
+                    htmlType="button"
+                    type="secondary"
+                    size="medium"
+                    icon={isEditing === "email" ? "CloseIcon" : "EditIcon"}
+                    onIconClick={() => handleIsEditChange("password")}
+                  >
+                    Отмена
+                  </Button>
+                  <Button htmlType="submit" type="primary" size="medium">
+                    Сохранить
+                  </Button>
+                </div>
+              )}
             </form>
-            {isEditing !== "" && (
-              <div>
-                {" "}
-                <Button
-                  onClick={handleCancelClick}
-                  htmlType="button"
-                  type="secondary"
-                  size="medium"
-                  icon={isEditing === "email" ? "CloseIcon" : "EditIcon"}
-                  onIconClick={() => handleIsEditChange("password")}
-                >
-                  Отмена
-                </Button>
-                <Button
-                  onClick={handleSaveClick}
-                  htmlType="button"
-                  type="primary"
-                  size="medium"
-                >
-                  Сохранить
-                </Button>
-              </div>
-            )}
           </div>
         </div>
         <div>

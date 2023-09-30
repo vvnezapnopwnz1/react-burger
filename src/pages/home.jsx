@@ -25,11 +25,6 @@ export function HomePage() {
           <OrderDetails />
         </Modal>
       )}
-      {modal.ingredient && (
-        <Modal>
-          <IngredientDetails />
-        </Modal>
-      )}
     </>
   );
 }

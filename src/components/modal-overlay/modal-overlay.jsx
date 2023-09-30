@@ -2,16 +2,19 @@ import React from "react";
 import modalOverlayStyles from "./modal-overlay.module.css";
 import PropTypes from "prop-types";
 import { closeModal } from "../../services/reducers/modalReducer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function ModalOverlay({ children }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const modal = useSelector((state) => state.modal);
 
   const handleCloseModal = (event) => {
     event.preventDefault();
     if (event.target === event.currentTarget) {
-      window.history.replaceState(null, "", "/");
       dispatch(closeModal());
+      modal.ingredient && navigate(-1);
     }
   };
 

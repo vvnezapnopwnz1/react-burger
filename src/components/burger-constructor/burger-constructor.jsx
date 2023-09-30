@@ -16,11 +16,12 @@ import { useDrop } from "react-dnd";
 import OrderIngredient from "../order-ingredient/order-ingredient";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
+import { getUser } from "../../services/reducers/userReducer";
 
 const BurgerConstructor = () => {
   const ingredients = useSelector((state) => state.ingredients.items);
   const order = useSelector((state) => state.order);
-  const { userData, token } = useSelector((state) => state.auth);
+  const { userData } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -56,15 +57,16 @@ const BurgerConstructor = () => {
 
   const handleOrderClick = () => {
     const { bun, constructorIngredients } = order;
-    if (userData) {
-      dispatch(fetchOrder({ constructorIngredients, bun, token }))
-        .unwrap()
-        .then(() => {
-          dispatch(setOrderDetails());
-        });
-    } else {
-      navigate("/login");
-    }
+    dispatch(getUser())
+      .unwrap()
+      .then(() => {
+        dispatch(fetchOrder({ constructorIngredients, bun }))
+          .unwrap()
+          .then(() => {
+            dispatch(setOrderDetails());
+          });
+      })
+      .catch((e) => navigate("/login"));
   };
   const [, drop] = useDrop(
     () => ({

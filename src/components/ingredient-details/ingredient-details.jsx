@@ -3,8 +3,12 @@ import ingredientDetailsStyles from "./ingredient-details.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../../services/reducers/modalReducer";
+import { useNavigate } from "react-router-dom";
+
 function IngredientDetails() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const ingredient = useSelector((state) => state.modal.ingredient);
   window.history.replaceState(
     null,
@@ -12,8 +16,8 @@ function IngredientDetails() {
     `/ingredients/${ingredient._id}`
   );
   const handleCloseModal = () => {
-    window.history.replaceState(null, "", "/");
     dispatch(closeModal());
+    navigate(-1);
   };
 
   return (

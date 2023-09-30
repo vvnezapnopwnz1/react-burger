@@ -19,27 +19,32 @@ export function ForgotPasswordPage() {
   let sendMail = useCallback(
     (e) => {
       e.preventDefault();
-      forgotPassword(email).then(() => navigate("/reset-password"));
+      forgotPassword(email)
+        .then(() => {
+          localStorage.setItem("reset", true);
+          navigate("/reset-password");
+        })
+        .catch(() => navigate("/"));
     },
     [email, navigate]
   );
 
   return (
     <div className={styles.formWrapper}>
-      <form className={`${styles.form} mb-25`}>
+      <form className={`${styles.form} mb-25`} onSubmit={sendMail}>
         <p className="text text_type_main-medium mb-2">Восстановление пароля</p>
         <Input
           extraClass="mb-2"
           type="text"
           placeholder="Укажите e-mail"
           onChange={onChange}
+          value={email}
         />
         <Button
           extraClass={styles.button}
-          htmlType="button"
+          htmlType="submit"
           type="primary"
           size="medium"
-          onClick={sendMail}
         >
           Восстановить
         </Button>

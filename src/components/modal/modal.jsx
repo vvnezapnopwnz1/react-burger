@@ -4,16 +4,19 @@ import modalStyles from "./modal.module.css";
 import PropTypes from "prop-types";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import { closeModal } from "../../services/reducers/modalReducer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 export function Modal({ children }) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const modal = useSelector((state) => state.modal);
 
   useEffect(() => {
     const keyDownHandler = (event) => {
       if (event.key === "Escape") {
         event.preventDefault();
-        window.history.replaceState(null, "", "/");
         dispatch(closeModal());
+        modal.ingredient && navigate(-1);
       }
     };
 
@@ -22,7 +25,7 @@ export function Modal({ children }) {
     return () => {
       document.removeEventListener("keydown", keyDownHandler);
     };
-  }, [dispatch]);
+  }, [dispatch, modal.ingredient, navigate]);
 
   return createPortal(
     <ModalOverlay>

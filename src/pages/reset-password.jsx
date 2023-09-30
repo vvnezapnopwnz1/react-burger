@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Navigate, Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import {
   Input,
   PasswordInput,
@@ -7,47 +7,49 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./home.module.css";
 import { resetPassword } from "../utils/burger-api";
+import { useForm } from "../hooks/useForm";
 
 export function ResetPasswordPage() {
-  const [form, setValue] = useState({ token: "", password: "" });
+  const { values, handleChange } = useForm({});
 
-  const onChange = (e) => {
-    setValue({ ...form, [e.target.name]: e.target.value });
-  };
+  const navigate = useNavigate();
 
   let applyReset = useCallback(
     (e) => {
       e.preventDefault();
-      resetPassword(form);
+      resetPassword(values)
+        .then(() => localStorage.removeItem("reset"))
+        .catch(() => navigate("/"));
     },
-    [form]
+    [values, navigate]
   );
-
+  if (!localStorage.getItem("reset")) {
+    return <Navigate to="/" />;
+  }
   return (
     <div className={styles.formWrapper}>
-      <form className={`${styles.form} mb-25`}>
+      <form className={`${styles.form} mb-25`} onSubmit={applyReset}>
         <p className="text text_type_main-medium mb-2">Восстановление пароля</p>
         <PasswordInput
           name="password"
           extraClass="mb-2"
           placeholder="Введите новый пароль"
-          onChange={onChange}
-          value={form.password}
+          onChange={handleChange}
+          value={values.password || ""}
         />
         <Input
           extraClass="mb-2"
           name="token"
           type="text"
           placeholder="Введите код из письма"
-          onChange={onChange}
-          value={form.token}
+          onChange={handleChange}
+          value={values.token || ""}
         />
         <Button
           extraClass={styles.button}
-          htmlType="button"
+          htmlType="submit"
           type="primary"
           size="medium"
-          onClick={applyReset}
         >
           Сохранить
         </Button>

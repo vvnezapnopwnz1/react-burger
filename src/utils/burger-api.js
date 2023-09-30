@@ -9,12 +9,12 @@ export async function getIngredients() {
   return checkReponse(res);
 }
 
-export async function getOrderNumber(ingredientsIds, token) {
+export async function getOrderNumber(ingredientsIds) {
   const res = await fetch(`${NORMA_API}/orders`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: token,
+      Authorization: localStorage.getItem("accessToken"),
     },
     body: JSON.stringify({
       ingredients: ingredientsIds,
@@ -63,6 +63,7 @@ export async function login({ email, password }) {
   });
   return checkReponse(res).then((data) => {
     localStorage.setItem("refreshToken", data.refreshToken);
+    localStorage.setItem("accessToken", data.accessToken);
     return data;
   });
 }
@@ -81,6 +82,7 @@ export async function register({ email, password, name }) {
   });
   return checkReponse(res).then((data) => {
     localStorage.setItem("refreshToken", data.refreshToken);
+    localStorage.setItem("accessToken", data.accessToken);
     return data;
   });
 }
@@ -96,11 +98,14 @@ export async function logout() {
     }),
   });
   return checkReponse(res).then((data) => {
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("accessToken");
     return data;
   });
 }
 
-export async function getUserData(token) {
+export async function getUserData() {
+  const token = localStorage.getItem("accessToken");
   const res = await fetch(`${NORMA_API}/auth/user`, {
     method: "GET",
     headers: {
@@ -108,17 +113,40 @@ export async function getUserData(token) {
       Authorization: token,
     },
   });
-  return checkReponse(res).then((data) => {
-    return data;
-  });
+  if (res.ok) {
+    return res.json();
+  }
+  if (localStorage.getItem("refreshToken")) {
+    let token;
+    return refreshToken(localStorage.getItem("refreshToken"))
+      .then(({ accessToken, refreshToken }) => {
+        token = accessToken;
+        localStorage.setItem("refreshToken", refreshToken);
+        return fetch(`${NORMA_API}/auth/user`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: accessToken,
+          },
+        });
+      })
+      .then(async (data) => {
+        let userData = await data.json();
+        localStorage.setItem("accessToken", token);
+        return { ...userData };
+      })
+      .catch(() => Promise.reject());
+  } else {
+    return Promise.reject();
+  }
 }
 
-export async function editUserData(token, field, value) {
+export async function editUserData(field, value) {
   const res = await fetch(`${NORMA_API}/auth/user`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      Authorization: token,
+      Authorization: localStorage.getItem("accessToken"),
     },
     body: JSON.stringify({
       [field]: value,
@@ -141,6 +169,7 @@ export async function refreshToken() {
   });
   return checkReponse(res).then((data) => {
     localStorage.setItem("refreshToken", data.refreshToken);
+    localStorage.setItem("accessToken", data.accessToken);
     return data;
   });
 }
