@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { TIngredient } from "../../types";
 
-const initialState = {
+const initialState: {
+  isOrder: boolean;
+  ingredient: TIngredient | null;
+} = {
   isOrder: false,
   ingredient: null,
 };

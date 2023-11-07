@@ -1,17 +1,9 @@
 import React, { useEffect } from "react";
 import AppHeader from "../app-header/app-header";
-import styles from "./app.module.css";
-
+import type { RootState, AppDispatch } from "../../services/reducers";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchIngredients } from "../../services/reducers/ingredientsReducer";
-import {
-  Routes,
-  Route,
-  Navigate,
-  Outlet,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
 import {
   HomePage,
   RegisterPage,
@@ -28,10 +20,10 @@ import Modal from "../modal/modal";
 import { ROUTES } from "../../utils/config";
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();
   const background = location.state && location.state.background;
-  const modal = useSelector((state) => state.modal);
+  const modal = useSelector((state: RootState) => state.modal);
 
   useEffect(() => {
     dispatch(fetchIngredients());

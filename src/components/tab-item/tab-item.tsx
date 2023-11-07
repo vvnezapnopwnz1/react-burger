@@ -5,25 +5,33 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag, DragPreviewImage } from "react-dnd";
 import { useSelector } from "react-redux";
-import PropTypes from "prop-types";
-import { ingredientTypes } from "../../utils/prop-types";
 import { Link, useLocation } from "react-router-dom";
+import { RootState } from "../../services/reducers";
+import { TIngredient } from "../../types";
 
-const TabItem = ({ item, handleDetails }) => {
+const TabItem = ({
+  item,
+  handleDetails,
+}: {
+  handleDetails: Function;
+  item: TIngredient;
+}) => {
   const location = useLocation();
 
   const ingredientId = item["_id"];
 
-  const count = useSelector((state) =>
+  const count = useSelector((state: RootState) =>
     item.type !== "bun"
       ? state.order.constructorIngredients.find(
           (ingredient) => ingredient._id === item._id
         )?.count
-      : state.order?.bun?._id === item._id && state.order.bun.count
+      : state.order?.bun?._id === item._id && state.order.bun?.count
   );
   const [, drag, preview] = useDrag({
     type: "items",
-    item,
+    item: () => {
+      return item;
+    },
     collect: (monitor) => ({
       opacity: monitor.isDragging() ? 0.5 : 1,
     }),
@@ -42,7 +50,7 @@ const TabItem = ({ item, handleDetails }) => {
         key={item._id}
         className={tabItemStyles.ingredientsItem}
       >
-        {count > 0 && (
+        {count && count > 0 && (
           <Counter count={count && count} size="default" extraClass="m-1" />
         )}
         <img alt={item.name} src={item.image} />
@@ -54,10 +62,6 @@ const TabItem = ({ item, handleDetails }) => {
       </div>
     </Link>
   );
-};
-TabItem.propTypes = {
-  item: ingredientTypes,
-  handleDetails: PropTypes.func,
 };
 
 export default TabItem;

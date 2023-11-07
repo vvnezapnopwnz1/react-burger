@@ -1,15 +1,23 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  SerializedError,
+} from "@reduxjs/toolkit";
 import { getIngredients } from "../../utils/burger-api";
+import { TIngredient } from "../../types";
 
-export const fetchIngredients = createAsyncThunk(
-  "ingredients",
-  async () => {
-    const response = await getIngredients();
-    return response.data;
-  }
-);
+export const fetchIngredients = createAsyncThunk("ingredients", async () => {
+  const response = await getIngredients();
+  return response.data;
+});
 
-const initialState = {
+type state = {
+  items: TIngredient[];
+  loading: string;
+  error: null | SerializedError;
+};
+
+const initialState: state = {
   items: [],
   loading: "idle",
   error: null,

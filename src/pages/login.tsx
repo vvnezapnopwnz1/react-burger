@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useEffect, SyntheticEvent } from "react";
 import { Navigate, Link, useNavigate } from "react-router-dom";
 import {
   Input,
@@ -10,12 +10,13 @@ import { loginUser } from "../services/reducers/userReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useForm } from "../hooks/useForm";
+import { AppDispatch, RootState } from "../services/reducers";
 
 export function LoginPage() {
   const { values, handleChange } = useForm({});
   const location = useLocation();
 
-  const user = useSelector((state) => state.auth.userData);
+  const user = useSelector((state: RootState) => state.auth.userData);
   const navigate = useNavigate();
   useEffect(() => {
     if (user) {
@@ -23,11 +24,11 @@ export function LoginPage() {
     }
   }, [location?.state?.from, navigate, user]);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   let login = useCallback(
-    async (e) => {
-      e.preventDefault();
+    async (event: SyntheticEvent) => {
+      event.preventDefault();
       dispatch(loginUser(values));
     },
     [values, dispatch]
@@ -37,7 +38,10 @@ export function LoginPage() {
   }
   return (
     <div className={styles.formWrapper}>
-      <form className={`${styles.form} mb-25`} onSubmit={login}>
+      <form
+        className={`${styles.form} mb-25`}
+        onSubmit={(e: SyntheticEvent) => login(e)}
+      >
         <p className="text text_type_main-medium mb-2">Вход</p>
         <Input
           onChange={handleChange}

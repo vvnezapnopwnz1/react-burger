@@ -17,13 +17,16 @@ import OrderIngredient from "../order-ingredient/order-ingredient";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../../services/reducers/userReducer";
+import type { RootState, AppDispatch } from "../../services/reducers";
+import { TIngredient } from "../../types";
 
 const BurgerConstructor = () => {
-  const ingredients = useSelector((state) => state.ingredients.items);
-  const order = useSelector((state) => state.order);
-  const { userData } = useSelector((state) => state.auth);
+  const ingredients = useSelector(
+    (state: RootState) => state.ingredients.items
+  );
+  const order = useSelector((state: RootState) => state.order);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [firstItem] = ingredients;
   const restWithoutBuns = useMemo(
@@ -38,7 +41,7 @@ const BurgerConstructor = () => {
     firstItem && dispatch(setBun({ bun: { ...firstItem, count: 2 } }));
     dispatch(setIngredients({ orderIngredients }));
   }, [dispatch, firstItem, restWithoutBuns]);
-  const nonDragableItem = (type) =>
+  const nonDragableItem = (type: "top" | "bottom") =>
     order.bun && (
       <div
         key={`${order.bun._id}-${type}`}
@@ -71,7 +74,7 @@ const BurgerConstructor = () => {
   const [, drop] = useDrop(
     () => ({
       accept: "items",
-      drop(item) {
+      drop(item: TIngredient) {
         if (item.type === "bun") {
           dispatch(setBun({ bun: { ...item, count: 2 } }));
           return;
@@ -79,7 +82,10 @@ const BurgerConstructor = () => {
         const newOrderIngredients = [
           ...order.constructorIngredients.map((ingredient) => {
             if (ingredient._id === item._id) {
-              return { ...ingredient, count: ingredient.count + 1 };
+              return {
+                ...ingredient,
+                count: ingredient.count && ingredient.count + 1,
+              };
             }
             return ingredient;
           }),
@@ -91,22 +97,28 @@ const BurgerConstructor = () => {
         ) {
           dispatch(
             setIngredients({
-              orderIngredients: newOrderIngredients.concat({
-                ...newOrderIngredients.find(
-                  (ingredient) => ingredient._id === item._id
-                ),
-                uuid: uuidv4(),
-              }),
+              orderIngredients: [
+                ...newOrderIngredients,
+                {
+                  ...newOrderIngredients.find(
+                    (ingredient) => ingredient._id === item._id
+                  ),
+                  uuid: uuidv4(),
+                },
+              ],
             })
           );
         } else {
           dispatch(
             setIngredients({
-              orderIngredients: newOrderIngredients.concat({
-                ...item,
-                count: 1,
-                uuid: uuidv4(),
-              }),
+              orderIngredients: [
+                ...newOrderIngredients,
+                {
+                  ...item,
+                  count: 1,
+                  uuid: uuidv4(),
+                },
+              ],
             })
           );
         }
@@ -124,8 +136,9 @@ const BurgerConstructor = () => {
 
   const totalOrderSum = useMemo(
     () =>
-      order.constructorIngredients.reduce((acc, item) => {
-        return (acc += item.price * item.count);
+      order.constructorIngredients.reduce((acc = 0, item) => {
+        if (item.count) return (acc += item.price * item.count);
+        return acc;
       }, order?.bun?.price),
     [order?.bun?.price, order.constructorIngredients]
   );
@@ -158,7 +171,5 @@ const BurgerConstructor = () => {
     </section>
   );
 };
-
-BurgerConstructor.propTypes = {};
 
 export default BurgerConstructor;

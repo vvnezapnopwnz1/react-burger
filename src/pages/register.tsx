@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { SyntheticEvent, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
   Input,
@@ -7,16 +7,17 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./home.module.css";
 import { registerUser } from "../services/reducers/userReducer";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useForm } from "../hooks/useForm";
+import { AppDispatch } from "../services/reducers";
 
 export function RegisterPage() {
   const { values, handleChange } = useForm({});
   const navigate = useNavigate();
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   let register = useCallback(
-    async (e) => {
+    async (e: SyntheticEvent) => {
       e.preventDefault();
       dispatch(registerUser(values))
         .unwrap()

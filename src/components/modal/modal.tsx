@@ -1,26 +1,35 @@
-import React, { useEffect } from "react";
+import React, { ReactNode, useEffect } from "react";
 import { createPortal } from "react-dom";
 import modalStyles from "./modal.module.css";
-import PropTypes from "prop-types";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import { closeModal } from "../../services/reducers/modalReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-export function Modal({ children }) {
+import { RootState } from "../../services/reducers";
+
+type TModal = {
+  children: ReactNode;
+};
+interface KeyboardEvent {
+  key: string;
+  preventDefault: Function;
+}
+
+export function Modal({ children }: TModal) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const modal = useSelector((state) => state.modal);
+  const modal = useSelector((state: RootState) => state.modal);
 
   useEffect(() => {
-    const keyDownHandler = (event) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        dispatch(closeModal());
-        modal.ingredient && navigate(-1);
-      }
+    const keyDownHandler = (event: KeyboardEvent) => {
+      event.preventDefault();
+      dispatch(closeModal());
+      modal.ingredient && navigate(-1);
     };
 
-    document.addEventListener("keydown", keyDownHandler);
+    document.addEventListener("keydown", (e: KeyboardEvent) =>
+      keyDownHandler(e)
+    );
 
     return () => {
       document.removeEventListener("keydown", keyDownHandler);
@@ -34,9 +43,5 @@ export function Modal({ children }) {
     document.body
   );
 }
-
-Modal.propTypes = {
-  children: PropTypes.element.isRequired,
-};
 
 export default Modal;

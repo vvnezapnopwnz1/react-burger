@@ -1,16 +1,20 @@
-import React from "react";
+import React, { ReactNode, MouseEvent } from "react";
 import modalOverlayStyles from "./modal-overlay.module.css";
-import PropTypes from "prop-types";
 import { closeModal } from "../../services/reducers/modalReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { RootState } from "../../services/reducers";
 
-function ModalOverlay({ children }) {
+type TModalOverlay = {
+  children: ReactNode;
+};
+
+function ModalOverlay({ children }: TModalOverlay) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const modal = useSelector((state) => state.modal);
+  const modal = useSelector((state: RootState) => state.modal);
 
-  const handleCloseModal = (event) => {
+  const handleCloseModal = (event: MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     if (event.target === event.currentTarget) {
       dispatch(closeModal());
@@ -27,9 +31,5 @@ function ModalOverlay({ children }) {
     </div>
   );
 }
-
-ModalOverlay.propTypes = {
-  children: PropTypes.element.isRequired,
-};
 
 export default ModalOverlay;

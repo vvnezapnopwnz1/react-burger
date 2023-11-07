@@ -1,4 +1,8 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  SerializedError,
+} from "@reduxjs/toolkit";
 import {
   login,
   register,
@@ -6,18 +10,28 @@ import {
   getUserData,
   editUserData,
 } from "../../utils/burger-api";
+import { TUser } from "../../types";
 
-const initialState = {
+type state = {
+  loading: string;
+  error: null | SerializedError;
+  userData: TUser | null;
+};
+
+const initialState: state = {
   userData: null,
   loading: "idle",
   error: null,
 };
-export const loginUser = createAsyncThunk("auth/login", async (formData) => {
-  return await login(formData);
-});
+export const loginUser = createAsyncThunk(
+  "auth/login",
+  async (formData: Record<string, string>) => {
+    return await login(formData);
+  }
+);
 export const registerUser = createAsyncThunk(
   "auth/register",
-  async (formData) => {
+  async (formData: Record<string, string>) => {
     return await register(formData);
   }
 );
@@ -33,7 +47,7 @@ export const getUser = createAsyncThunk(
 
 export const editUser = createAsyncThunk(
   "auth/editUser",
-  async ({ field, value }) => {
+  async ({ field, value }: { field: string; value: string }) => {
     return await editUserData(field, value);
   }
 );
@@ -99,6 +113,4 @@ const authSlice = createSlice({
   },
 });
 
-export const { setIngredients, addIngredient, setBun, sortIngredients } =
-  authSlice.actions;
 export default authSlice.reducer;

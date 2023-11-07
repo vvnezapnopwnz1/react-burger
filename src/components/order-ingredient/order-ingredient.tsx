@@ -10,21 +10,30 @@ import {
   setIngredients,
 } from "../../services/reducers/orderReducer";
 import { useDrop, useDrag } from "react-dnd";
-import { ingredientTypes } from "../../utils/prop-types";
-import PropTypes from "prop-types";
+import { RootState } from "../../services/reducers";
+import { TIngredient } from "../../types";
 
-const OrderIngredient = ({ item, index }) => {
-  const order = useSelector((state) => state.order);
+type TOrderIngredient = {
+  item: TIngredient & { uuid: string; count: number };
+  index: number;
+};
+
+const OrderIngredient = ({ item, index }: TOrderIngredient) => {
+  const order = useSelector((state: RootState) => state.order);
 
   const dispatch = useDispatch();
-  const handleDeleteClick = (item) => {
+  const handleDeleteClick = (
+    item: TIngredient & { uuid: string; count: number }
+  ) => {
     const newOrderIngredients = [
       ...order.constructorIngredients
         .map((ingredient) => {
           if (ingredient._id === item._id) {
             return {
               ...ingredient,
-              count: ingredient.count > 0 ? ingredient.count - 1 : 0,
+              count:
+                ingredient.count &&
+                (ingredient.count > 0 ? ingredient.count - 1 : 0),
             };
           }
           return ingredient;
@@ -35,7 +44,7 @@ const OrderIngredient = ({ item, index }) => {
     ];
     dispatch(setIngredients({ orderIngredients: newOrderIngredients }));
   };
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [, drop] = useDrop({
     accept: "ingredient",
     collect(monitor) {
@@ -43,7 +52,7 @@ const OrderIngredient = ({ item, index }) => {
         handlerId: monitor.getHandlerId(),
       };
     },
-    hover(item, monitor) {
+    hover(item: any, monitor) {
       if (!ref.current) {
         return;
       }
@@ -56,15 +65,17 @@ const OrderIngredient = ({ item, index }) => {
       const hoverMiddleY =
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return;
+      if (clientOffset) {
+        const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+          return;
+        }
+        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+          return;
+        }
+        dispatch(sortIngredients({ dragIndex, hoverIndex }));
+        item.index = hoverIndex;
       }
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return;
-      }
-      dispatch(sortIngredients({ dragIndex, hoverIndex }));
-      item.index = hoverIndex;
     },
   });
   const [{ isDragging }, drag] = useDrag({
@@ -98,11 +109,6 @@ const OrderIngredient = ({ item, index }) => {
       />
     </div>
   );
-};
-
-OrderIngredient.propTypes = {
-  item: ingredientTypes,
-  index: PropTypes.number,
 };
 
 export default OrderIngredient;

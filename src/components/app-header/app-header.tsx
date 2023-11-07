@@ -1,6 +1,6 @@
 import React from "react";
 import headerStyles from "./app-header.module.css";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   Logo,
   BurgerIcon,

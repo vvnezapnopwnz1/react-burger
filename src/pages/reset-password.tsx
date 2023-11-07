@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { SyntheticEvent, useCallback } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import {
   Input,
@@ -15,7 +15,7 @@ export function ResetPasswordPage() {
   const navigate = useNavigate();
 
   let applyReset = useCallback(
-    (e) => {
+    (e: SyntheticEvent) => {
       e.preventDefault();
       resetPassword(values)
         .then(() => localStorage.removeItem("reset"))

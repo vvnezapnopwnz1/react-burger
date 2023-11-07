@@ -1,4 +1,9 @@
-import React, { useCallback, useState } from "react";
+import React, {
+  ChangeEvent,
+  SyntheticEvent,
+  useCallback,
+  useState,
+} from "react";
 import { Link } from "react-router-dom";
 import {
   Input,
@@ -12,16 +17,16 @@ export function ForgotPasswordPage() {
   const [email, setValue] = useState("");
   const navigate = useNavigate();
 
-  const onChange = (e) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
 
   let sendMail = useCallback(
-    (e) => {
+    (e: SyntheticEvent) => {
       e.preventDefault();
       forgotPassword(email)
         .then(() => {
-          localStorage.setItem("reset", true);
+          localStorage.setItem("reset", "true");
           navigate("/reset-password");
         })
         .catch(() => navigate("/"));

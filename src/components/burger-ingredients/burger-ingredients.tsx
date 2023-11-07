@@ -1,15 +1,18 @@
-import React, { useMemo, useRef } from "react";
+import React, { UIEvent, useMemo, useRef } from "react";
 import ingredientsStyles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector, useDispatch } from "react-redux";
 import { setIngredientDetails } from "../../services/reducers/modalReducer";
-
+import type { RootState, AppDispatch } from "../../services/reducers";
 import TabItem from "../tab-item/tab-item";
+import { TIngredient } from "../../types";
 
 const BurgerIngredients = () => {
   const [current, setCurrent] = React.useState("Булки");
-  const ingredients = useSelector((state) => state.ingredients.items);
-  const tabRef = useRef();
+  const ingredients = useSelector(
+    (state: RootState) => state.ingredients.items
+  );
+  const tabRef = useRef<HTMLDivElement | null>(null);
   const [buns, sauces, main] = useMemo(() => {
     const buns = ingredients.filter((item) => item.type === "bun");
     const sauces = ingredients.filter((item) => item.type === "sauce");
@@ -18,22 +21,24 @@ const BurgerIngredients = () => {
     return [buns, sauces, main];
   }, [ingredients]);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const handleDetails = (item) => {
+  const handleDetails = (item: TIngredient) => {
     dispatch(setIngredientDetails(item));
   };
 
-  const tabContent = (ingredients) => {
+  const tabContent = (ingredients: TIngredient[]) => {
     return ingredients.map((item, index) => (
       <TabItem key={index} item={item} handleDetails={handleDetails} />
     ));
   };
 
-  const handleScroll = (event) => {
-    for (let tab of event.target.children) {
+  const handleScroll = (event: UIEvent<HTMLDivElement, UIEvent>) => {
+    const divElement = event.target as HTMLDivElement;
+    for (let tab of divElement.children) {
       const tabClientRect = tab.getBoundingClientRect();
       if (
+        tabRef.current &&
         tabClientRect.height / 2 - tabClientRect.top > 0 &&
         tabClientRect.height / 2 - tabClientRect.top <
           tabRef.current.getBoundingClientRect().top
@@ -66,7 +71,7 @@ const BurgerIngredients = () => {
       <div
         className={ingredientsStyles.tabContent}
         ref={tabRef}
-        onScroll={handleScroll}
+        onScroll={(e: any) => handleScroll(e)}
       >
         <div id="Булки">
           <p className="text text_type_main-medium p-10">Булки</p>
@@ -88,7 +93,5 @@ const BurgerIngredients = () => {
     </section>
   );
 };
-
-BurgerIngredients.propTypes = {};
 
 export default BurgerIngredients;

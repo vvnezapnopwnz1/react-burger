@@ -1,7 +1,20 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  SerializedError,
+} from "@reduxjs/toolkit";
 import { getOrderNumber } from "../../utils/burger-api";
+import { TGetOrderNumberResponse, TIngredient } from "../../types";
 
-const initialState = {
+type state = {
+  constructorIngredients: Array<TIngredient & { uuid: string; count: number }>;
+  bun: null | TIngredient;
+  loading: string;
+  error: null | SerializedError;
+  orderData: TGetOrderNumberResponse | null;
+};
+
+const initialState: state = {
   constructorIngredients: [],
   bun: null,
   orderData: null,
@@ -10,13 +23,23 @@ const initialState = {
 };
 export const fetchOrder = createAsyncThunk(
   "order",
-  async ({ constructorIngredients, bun }) => {
-    const ingredientsIds = [
-      bun._id,
-      ...constructorIngredients.map((ingredient) => ingredient._id),
-      bun._id,
-    ];
-    return await getOrderNumber(ingredientsIds);
+  async ({
+    constructorIngredients,
+    bun,
+  }: {
+    constructorIngredients: TIngredient[];
+    bun: TIngredient | null;
+  }) => {
+    if (bun) {
+      const ingredientsIds = [
+        bun._id,
+        ...constructorIngredients.map(
+          (ingredient: TIngredient) => ingredient._id
+        ),
+        bun._id,
+      ];
+      return await getOrderNumber(ingredientsIds);
+    }
   }
 );
 
@@ -55,6 +78,5 @@ const orderSlice = createSlice({
   },
 });
 
-export const { setIngredients, addIngredient, setBun, sortIngredients } =
-  orderSlice.actions;
+export const { setIngredients, setBun, sortIngredients } = orderSlice.actions;
 export default orderSlice.reducer;
