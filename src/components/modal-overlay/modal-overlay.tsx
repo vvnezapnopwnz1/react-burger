@@ -4,6 +4,7 @@ import { closeModal } from "../../services/reducers/modalReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../services/reducers";
+import { resetOrderData } from "../../services/reducers/orderReducer";
 
 type TModalOverlay = {
   children: ReactNode;
@@ -17,6 +18,7 @@ function ModalOverlay({ children }: TModalOverlay) {
   const handleCloseModal = (event: MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     if (event.target === event.currentTarget) {
+      dispatch(resetOrderData());
       dispatch(closeModal());
       modal.ingredient && navigate(-1);
     }

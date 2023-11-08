@@ -100,8 +100,10 @@ const authSlice = createSlice({
         state.error = action.error;
       })
       .addCase(editUser.fulfilled, (state, action) => {
-        state.loading = "idle";
-        state.userData = action.payload.user;
+        if (action.payload) {
+          state.loading = "idle";
+          state.userData = action.payload.user;
+        }
       })
       .addCase(editUser.pending, (state) => {
         state.loading = "pending";

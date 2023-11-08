@@ -5,15 +5,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../../services/reducers/modalReducer";
 import Done from "../../images/done.svg";
 import { RootState } from "../../services/reducers";
+import { resetOrderData } from "../../services/reducers/orderReducer";
 
 function OrderDetails() {
   const dispatch = useDispatch();
 
   const handleCloseModal = () => {
+    dispatch(resetOrderData());
     dispatch(closeModal());
   };
 
-  const { orderData } = useSelector((state: RootState) => state.order);
+  const { orderData, loading } = useSelector((state: RootState) => state.order);
 
   return (
     <div className={orderDetailsStyles.details}>
@@ -38,6 +40,10 @@ function OrderDetails() {
             Дождитесь готовности на орбитальной станции
           </p>
         </>
+      ) : loading ? (
+        <p className="text text_type_main-large text_color_active m-15">
+          Создание заказа...
+        </p>
       ) : null}
     </div>
   );

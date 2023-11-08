@@ -33,7 +33,7 @@ const BurgerIngredients = () => {
     ));
   };
 
-  const handleScroll = (event: UIEvent<HTMLDivElement, UIEvent>) => {
+  const handleScroll = (event: UIEvent<HTMLDivElement>) => {
     const divElement = event.target as HTMLDivElement;
     for (let tab of divElement.children) {
       const tabClientRect = tab.getBoundingClientRect();
@@ -71,7 +71,7 @@ const BurgerIngredients = () => {
       <div
         className={ingredientsStyles.tabContent}
         ref={tabRef}
-        onScroll={(e: any) => handleScroll(e)}
+        onScroll={(e) => handleScroll(e)}
       >
         <div id="Булки">
           <p className="text text_type_main-medium p-10">Булки</p>

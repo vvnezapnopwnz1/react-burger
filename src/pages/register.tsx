@@ -11,8 +11,20 @@ import { useDispatch } from "react-redux";
 import { useForm } from "../hooks/useForm";
 import { AppDispatch } from "../services/reducers";
 
+type FormStateType = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+const initialFormState: FormStateType = {
+  name: "",
+  email: "",
+  password: "",
+};
+
 export function RegisterPage() {
-  const { values, handleChange } = useForm({});
+  const { values, handleChange } = useForm<FormStateType>(initialFormState);
   const navigate = useNavigate();
 
   const dispatch = useDispatch<AppDispatch>();
@@ -39,7 +51,7 @@ export function RegisterPage() {
           type="text"
           placeholder="Имя"
           name="name"
-          value={values.name || ""}
+          value={values.name}
         />
         <Input
           onChange={handleChange}
@@ -47,13 +59,13 @@ export function RegisterPage() {
           type="text"
           placeholder="E-mail"
           name="email"
-          value={values.email || ""}
+          value={values.email}
         />
         <PasswordInput
           onChange={handleChange}
           name={"password"}
           extraClass="mb-2"
-          value={values.password || ""}
+          value={values.password}
         />
         <Button
           extraClass={styles.registerButton}

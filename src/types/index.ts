@@ -13,7 +13,13 @@ export type TIngredient = {
   uuid?: number;
 };
 
-export type TGetOrderNumberResponse = {
+export type TUser = {
+  email: string;
+  name: string;
+  password?: string;
+};
+
+export type TOrderNumberResponse = {
   success: boolean;
   name: string;
   order: {
@@ -33,8 +39,22 @@ export type TGetOrderNumberResponse = {
   };
 };
 
-export type TUser = {
-  email: string;
-  name: string;
-  password?: string;
-};
+export type TServerResponse<T> = {
+  success: boolean;
+} & T;
+
+//
+export type TRefreshResponse = TServerResponse<{
+  refreshToken: string;
+  accessToken: string;
+}>;
+
+export type TIngredientsResponse = TServerResponse<{
+  data: TIngredient[];
+}>;
+
+export type TLoginOrRegisterResponse = TServerResponse<{
+  refreshToken: string;
+  accessToken: string;
+  user: TUser;
+}>;

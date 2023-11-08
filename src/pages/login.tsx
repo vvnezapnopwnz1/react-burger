@@ -12,8 +12,18 @@ import { useLocation } from "react-router-dom";
 import { useForm } from "../hooks/useForm";
 import { AppDispatch, RootState } from "../services/reducers";
 
+type FormStateType = {
+  email: string;
+  password: string;
+};
+
+const initialFormState: FormStateType = {
+  email: "",
+  password: "",
+};
+
 export function LoginPage() {
-  const { values, handleChange } = useForm({});
+  const { values, handleChange } = useForm<FormStateType>(initialFormState);
   const location = useLocation();
 
   const user = useSelector((state: RootState) => state.auth.userData);
@@ -49,13 +59,13 @@ export function LoginPage() {
           type="text"
           placeholder="E-mail"
           name="email"
-          value={values.email || ""}
+          value={values.email}
         />
         <PasswordInput
           onChange={handleChange}
           name={"password"}
           extraClass="mb-2"
-          value={values.password || ""}
+          value={values.password}
         />
         <Button
           type="primary"

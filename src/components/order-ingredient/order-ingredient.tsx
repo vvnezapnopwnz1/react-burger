@@ -12,6 +12,7 @@ import {
 import { useDrop, useDrag } from "react-dnd";
 import { RootState } from "../../services/reducers";
 import { TIngredient } from "../../types";
+import { Identifier } from "dnd-core";
 
 type TOrderIngredient = {
   item: TIngredient & { uuid: string; count: number };
@@ -45,7 +46,11 @@ const OrderIngredient = ({ item, index }: TOrderIngredient) => {
     dispatch(setIngredients({ orderIngredients: newOrderIngredients }));
   };
   const ref = useRef<HTMLDivElement>(null);
-  const [, drop] = useDrop({
+  const [, drop] = useDrop<
+    { item: number; index: number },
+    unknown,
+    { handlerId: Identifier | null }
+  >({
     accept: "ingredient",
     collect(monitor) {
       return {

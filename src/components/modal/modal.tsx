@@ -6,6 +6,7 @@ import { closeModal } from "../../services/reducers/modalReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../services/reducers";
+import { resetOrderData } from "../../services/reducers/orderReducer";
 
 type TModal = {
   children: ReactNode;
@@ -23,6 +24,7 @@ export function Modal({ children }: TModal) {
   useEffect(() => {
     const keyDownHandler = (event: KeyboardEvent) => {
       event.preventDefault();
+      dispatch(resetOrderData());
       dispatch(closeModal());
       modal.ingredient && navigate(-1);
     };

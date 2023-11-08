@@ -1,13 +1,20 @@
-import { TUser } from "../types";
+import {
+  TOrderNumberResponse,
+  TIngredientsResponse,
+  TLoginOrRegisterResponse,
+  TRefreshResponse,
+} from "../types";
 import { NORMA_API } from "./config";
 
-const checkReponse = (res: Response) => {
+const checkResponse = <T>(res: Response): Promise<T> => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
 export async function getIngredients() {
   const res = await fetch(`${NORMA_API}/ingredients`);
-  return checkReponse(res);
+  let a = await checkResponse<TIngredientsResponse>(res);
+  console.log(a);
+  return a;
 }
 
 export async function getOrderNumber(ingredientsIds: string[]) {
@@ -23,7 +30,7 @@ export async function getOrderNumber(ingredientsIds: string[]) {
         ingredients: ingredientsIds,
       }),
     });
-    return checkReponse(res);
+    return checkResponse<TOrderNumberResponse>(res);
   }
 }
 
@@ -37,7 +44,7 @@ export async function forgotPassword(email: string) {
       email: email,
     }),
   });
-  return checkReponse(res);
+  return checkResponse(res);
 }
 
 export async function resetPassword({
@@ -54,7 +61,7 @@ export async function resetPassword({
       token,
     }),
   });
-  return checkReponse(res);
+  return checkResponse(res);
 }
 
 export async function login({ email, password }: Record<string, string>) {
@@ -68,13 +75,11 @@ export async function login({ email, password }: Record<string, string>) {
       password: password,
     }),
   });
-  return checkReponse(res).then(
-    (data: { refreshToken: string; accessToken: string; user: TUser }) => {
-      localStorage.setItem("refreshToken", data.refreshToken);
-      localStorage.setItem("accessToken", data.accessToken);
-      return data;
-    }
-  );
+  return checkResponse<TLoginOrRegisterResponse>(res).then((data) => {
+    localStorage.setItem("refreshToken", data.refreshToken);
+    localStorage.setItem("accessToken", data.accessToken);
+    return data;
+  });
 }
 
 export async function register({
@@ -93,13 +98,11 @@ export async function register({
       name: name,
     }),
   });
-  return checkReponse(res).then(
-    (data: { refreshToken: string; accessToken: string; user: TUser }) => {
-      localStorage.setItem("refreshToken", data.refreshToken);
-      localStorage.setItem("accessToken", data.accessToken);
-      return data;
-    }
-  );
+  return checkResponse<TLoginOrRegisterResponse>(res).then((data) => {
+    localStorage.setItem("refreshToken", data.refreshToken);
+    localStorage.setItem("accessToken", data.accessToken);
+    return data;
+  });
 }
 
 export async function logout() {
@@ -112,7 +115,7 @@ export async function logout() {
       token: localStorage.getItem("refreshToken"),
     }),
   });
-  return checkReponse(res).then(() => {
+  return checkResponse(res).then(() => {
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("accessToken");
     return;
@@ -171,7 +174,7 @@ export async function editUserData(field: string, value: string) {
         [field]: value,
       }),
     });
-    return checkReponse(res).then((data) => {
+    return checkResponse<TLoginOrRegisterResponse>(res).then((data) => {
       return data;
     });
   }
@@ -187,11 +190,9 @@ export async function refreshToken() {
       token: localStorage.getItem("refreshToken"),
     }),
   });
-  return checkReponse(res).then(
-    (data: { refreshToken: string; accessToken: string }) => {
-      localStorage.setItem("refreshToken", data.refreshToken);
-      localStorage.setItem("accessToken", data.accessToken);
-      return data;
-    }
-  );
+  return checkResponse<TRefreshResponse>(res).then((data) => {
+    localStorage.setItem("refreshToken", data.refreshToken);
+    localStorage.setItem("accessToken", data.accessToken);
+    return data;
+  });
 }

@@ -63,11 +63,8 @@ const BurgerConstructor = () => {
     dispatch(getUser())
       .unwrap()
       .then(() => {
-        dispatch(fetchOrder({ constructorIngredients, bun }))
-          .unwrap()
-          .then(() => {
-            dispatch(setOrderDetails());
-          });
+        dispatch(setOrderDetails());
+        dispatch(fetchOrder({ constructorIngredients, bun })).unwrap();
       })
       .catch((e) => navigate("/login"));
   };

@@ -4,14 +4,14 @@ import {
   SerializedError,
 } from "@reduxjs/toolkit";
 import { getOrderNumber } from "../../utils/burger-api";
-import { TGetOrderNumberResponse, TIngredient } from "../../types";
+import { TOrderNumberResponse, TIngredient } from "../../types";
 
 type state = {
   constructorIngredients: Array<TIngredient & { uuid: string; count: number }>;
-  bun: null | TIngredient;
+  bun: TIngredient | null;
   loading: string;
-  error: null | SerializedError;
-  orderData: TGetOrderNumberResponse | null;
+  error: SerializedError | null;
+  orderData: TOrderNumberResponse | null;
 };
 
 const initialState: state = {
@@ -61,12 +61,17 @@ const orderSlice = createSlice({
       state.constructorIngredients[action.payload.hoverIndex] =
         draggingIngredient;
     },
+    resetOrderData(state) {
+      state.orderData = null;
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchOrder.fulfilled, (state, action) => {
-        state.loading = "idle";
-        state.orderData = action.payload;
+        if (action.payload) {
+          state.loading = "idle";
+          state.orderData = action.payload;
+        }
       })
       .addCase(fetchOrder.pending, (state) => {
         state.loading = "pending";
@@ -78,5 +83,6 @@ const orderSlice = createSlice({
   },
 });
 
-export const { setIngredients, setBun, sortIngredients } = orderSlice.actions;
+export const { setIngredients, setBun, sortIngredients, resetOrderData } =
+  orderSlice.actions;
 export default orderSlice.reducer;

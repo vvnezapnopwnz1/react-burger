@@ -9,8 +9,18 @@ import styles from "./home.module.css";
 import { resetPassword } from "../utils/burger-api";
 import { useForm } from "../hooks/useForm";
 
+type FormStateType = {
+  token: string;
+  password: string;
+};
+
+const initialFormState: FormStateType = {
+  token: "",
+  password: "",
+};
+
 export function ResetPasswordPage() {
-  const { values, handleChange } = useForm({});
+  const { values, handleChange } = useForm<FormStateType>(initialFormState);
 
   const navigate = useNavigate();
 
