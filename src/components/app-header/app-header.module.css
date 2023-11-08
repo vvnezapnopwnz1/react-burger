@@ -1,0 +1,26 @@
+header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 16px 0;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav div {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    position: relative;
+    right: 3%;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+}

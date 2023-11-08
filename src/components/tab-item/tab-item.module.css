@@ -1,0 +1,19 @@
+.ingredientsItem {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+    flex: 50%;
+    width: min-content;
+    /* padding: 0 5px; */
+}
+
+.ingredientsItem p {
+    height: 50px;
+}
+
+.price {
+    display: flex;
+}
