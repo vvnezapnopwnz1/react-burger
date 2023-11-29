@@ -33,7 +33,7 @@ const AppHeader = () => {
                 !isActive && "text_color_inactive"
               }`
             }
-            to="/orders"
+            to="/feed"
           >
             Лента заказов
           </NavLink>

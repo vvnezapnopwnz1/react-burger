@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import AppHeader from "../app-header/app-header";
-import type { RootState, AppDispatch } from "../../services/reducers";
+import { type RootState, type AppDispatch } from "../../services/reducers";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchIngredients } from "../../services/reducers/ingredientsReducer";
 import { Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
@@ -18,6 +18,10 @@ import { ProtectedRouteElement } from "../protected-route";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
 import { ROUTES } from "../../utils/config";
+import { FeedPage } from "../../pages/feed";
+import FeedDetails from "../feed-details/feed-details";
+import { SingleOrderPage } from "../../pages/single-order";
+import { HistoryPage } from "../../pages/history";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -31,7 +35,6 @@ function App() {
 
   const Anonymous = () => {
     const token = localStorage.getItem("accessToken");
-
     return token ? <Navigate to="/" replace /> : <Outlet />;
   };
 
@@ -40,6 +43,7 @@ function App() {
       <AppHeader />
       <Routes location={background || location}>
         <Route path={ROUTES.home} element={<HomePage />} />
+        <Route path={`${ROUTES.feed}/:id`} element={<SingleOrderPage />} />
         <Route
           path={`${ROUTES.ingredients}/:id`}
           element={<IngredientPage />}
@@ -60,12 +64,13 @@ function App() {
         />
         <Route
           path={`${ROUTES.profile}/orders`}
-          element={<ProtectedRouteElement element={<ProfilePage />} />}
+          element={<ProtectedRouteElement element={<HistoryPage />} />}
         />
         <Route
           path={`${ROUTES.profile}/orders/:id`}
-          element={<ProtectedRouteElement element={<ProfilePage />} />}
+          element={<ProtectedRouteElement element={<SingleOrderPage />} />}
         />
+        <Route path={`${ROUTES.feed}`} element={<FeedPage />} />
         <Route path={ROUTES.notFound} element={<NotFound404 />} />
       </Routes>
       {background && (
@@ -76,6 +81,26 @@ function App() {
               modal.ingredient && (
                 <Modal>
                   <IngredientDetails />
+                </Modal>
+              )
+            }
+          />
+          <Route
+            path={`${ROUTES.feed}/:id`}
+            element={
+              modal.feedDetails && (
+                <Modal>
+                  <FeedDetails />
+                </Modal>
+              )
+            }
+          />
+          <Route
+            path={`${ROUTES.profile}/orders/:id`}
+            element={
+              modal.feedDetails && (
+                <Modal>
+                  <FeedDetails />
                 </Modal>
               )
             }

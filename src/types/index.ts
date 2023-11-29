@@ -8,6 +8,7 @@ export type TIngredient = {
   fat: string;
   carbohydrates: string;
   image_large: string;
+  image_mobile: string;
   proteins: string;
   count?: number;
   uuid?: number;
@@ -38,6 +39,23 @@ export type TOrderNumberResponse = {
     };
   };
 };
+export type TOrdersResponse = {
+  success: boolean;
+  name: string;
+  orders: [
+    {
+      ingredients: Array<TIngredient>;
+      name: string;
+      number: number;
+      price: number;
+      status: string;
+      _id: string;
+      updatedAt: string;
+      createdAt: string;
+      success: boolean;
+    }
+  ];
+};
 
 export type TServerResponse<T> = {
   success: boolean;
@@ -58,3 +76,15 @@ export type TLoginOrRegisterResponse = TServerResponse<{
   accessToken: string;
   user: TUser;
 }>;
+
+export type TOrder = {
+  _id: string;
+  success: boolean;
+  name: string;
+  status: string;
+  ingredients: TIngredient[];
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+};
+

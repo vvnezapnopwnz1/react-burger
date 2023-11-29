@@ -26,7 +26,7 @@ export function Modal({ children }: TModal) {
       event.preventDefault();
       dispatch(resetOrderData());
       dispatch(closeModal());
-      modal.ingredient && navigate(-1);
+      (modal.ingredient || modal.feedDetails) && navigate(-1);
     };
 
     document.addEventListener("keydown", (e: KeyboardEvent) =>
@@ -36,7 +36,7 @@ export function Modal({ children }: TModal) {
     return () => {
       document.removeEventListener("keydown", keyDownHandler);
     };
-  }, [dispatch, modal.ingredient, navigate]);
+  }, [dispatch, modal.feedDetails, modal.ingredient, navigate]);
 
   return createPortal(
     <ModalOverlay>

@@ -1,12 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { TIngredient } from "../../types";
+import { TIngredient, TOrder } from "../../types";
 
 const initialState: {
   isOrder: boolean;
   ingredient: TIngredient | null;
+  feedDetails: TOrder | null;
 } = {
   isOrder: false,
   ingredient: null,
+  feedDetails: null,
 };
 
 const modalSlice = createSlice({
@@ -21,10 +23,15 @@ const modalSlice = createSlice({
       state.ingredient = null;
       state.isOrder = true;
     },
+    setFeedDetails(state, action) {
+      state.ingredient = null;
+      state.isOrder = false;
+      state.feedDetails = action.payload;
+    },
     closeModal: () => initialState,
   },
 });
 
-export const { setIngredientDetails, setOrderDetails, closeModal } =
+export const { setIngredientDetails, setOrderDetails, closeModal, setFeedDetails } =
   modalSlice.actions;
 export default modalSlice.reducer;

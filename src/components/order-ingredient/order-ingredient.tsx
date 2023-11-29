@@ -57,7 +57,7 @@ const OrderIngredient = ({ item, index }: TOrderIngredient) => {
         handlerId: monitor.getHandlerId(),
       };
     },
-    hover(item: any, monitor) {
+    hover(item, monitor) {
       if (!ref.current) {
         return;
       }

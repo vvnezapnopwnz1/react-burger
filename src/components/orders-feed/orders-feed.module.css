@@ -1,0 +1,18 @@
+.feedContent {
+    height: 70vh;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.feedContent::-webkit-scrollbar {
+    width: 8px;
+}
+
+.feedContent::-webkit-scrollbar-track {
+    background: rgba(47, 47, 55, 1);
+
+}
+
+.feedContent::-webkit-scrollbar-thumb {
+    background-color: rgba(76, 76, 255, 1);
+}

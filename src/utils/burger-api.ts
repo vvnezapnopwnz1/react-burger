@@ -3,6 +3,7 @@ import {
   TIngredientsResponse,
   TLoginOrRegisterResponse,
   TRefreshResponse,
+  TOrdersResponse,
 } from "../types";
 import { NORMA_API } from "./config";
 
@@ -12,9 +13,8 @@ const checkResponse = <T>(res: Response): Promise<T> => {
 
 export async function getIngredients() {
   const res = await fetch(`${NORMA_API}/ingredients`);
-  let a = await checkResponse<TIngredientsResponse>(res);
-  console.log(a);
-  return a;
+  let result = await checkResponse<TIngredientsResponse>(res);
+  return result;
 }
 
 export async function getOrderNumber(ingredientsIds: string[]) {
@@ -195,4 +195,10 @@ export async function refreshToken() {
     localStorage.setItem("accessToken", data.accessToken);
     return data;
   });
+}
+
+export async function getOrder(id: string) {
+  const res = await fetch(`${NORMA_API}/orders/${id}`);
+  let result = await checkResponse<TOrdersResponse>(res);
+  return result;
 }

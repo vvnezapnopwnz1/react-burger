@@ -20,7 +20,7 @@ function ModalOverlay({ children }: TModalOverlay) {
     if (event.target === event.currentTarget) {
       dispatch(resetOrderData());
       dispatch(closeModal());
-      modal.ingredient && navigate(-1);
+      (modal.ingredient || modal.feedDetails) && navigate(-1);
     }
   };
 
