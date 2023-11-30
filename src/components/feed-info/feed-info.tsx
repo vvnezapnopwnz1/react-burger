@@ -1,20 +1,10 @@
-import React, { useMemo, useRef } from "react";
+import React, { useMemo } from "react";
 import styles from "./feed-info.module.css";
-import { useSelector } from "react-redux";
-import { RootState } from "../../services/reducers";
+import { useSelector } from "../../services/reducers";
 import { TOrder } from "../../types";
 
-// type TOrderIngredient = {
-//   item: TIngredient & { uuid: string; count: number };
-//   index: number;
-// };
-
 const FeedInfo = () => {
-  // const order = useSelector((state: RootState) => state.order);
-
-  const { total, totalToday, orders } = useSelector(
-    (state: RootState) => state.feed
-  );
+  const { total, totalToday, orders } = useSelector((state) => state.feed);
 
   const readyOrders = useMemo(
     () =>

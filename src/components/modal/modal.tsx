@@ -3,9 +3,8 @@ import { createPortal } from "react-dom";
 import modalStyles from "./modal.module.css";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import { closeModal } from "../../services/reducers/modalReducer";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../../services/reducers";
+import { useAppDispatch, useSelector } from "../../services/reducers";
 import { resetOrderData } from "../../services/reducers/orderReducer";
 
 type TModal = {
@@ -18,8 +17,8 @@ interface KeyboardEvent {
 
 export function Modal({ children }: TModal) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const modal = useSelector((state: RootState) => state.modal);
+  const dispatch = useAppDispatch();
+  const modal = useSelector((state) => state.modal);
 
   useEffect(() => {
     const keyDownHandler = (event: KeyboardEvent) => {

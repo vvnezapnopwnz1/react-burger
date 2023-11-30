@@ -5,7 +5,6 @@ import {
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector, useDispatch } from "react-redux";
 import {
   setIngredients,
   setBun,
@@ -17,16 +16,17 @@ import OrderIngredient from "../order-ingredient/order-ingredient";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../../services/reducers/userReducer";
-import type { RootState, AppDispatch } from "../../services/reducers";
+import {
+  useSelector,
+  useAppDispatch,
+} from "../../services/reducers";
 import { TIngredient } from "../../types";
 
 const BurgerConstructor = () => {
-  const ingredients = useSelector(
-    (state: RootState) => state.ingredients.items
-  );
-  const order = useSelector((state: RootState) => state.order);
+  const ingredients = useSelector((state) => state.ingredients.items);
+  const order = useSelector((state) => state.order);
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const [firstItem] = ingredients;
   const restWithoutBuns = useMemo(

@@ -15,6 +15,11 @@ import {
   WS_CONNECTION_ERROR,
   WS_GET_MESSAGE,
 } from "../../types/wsTypes";
+import {
+  useSelector as useReduxSelector,
+  TypedUseSelectorHook,
+  useDispatch,
+} from "react-redux";
 
 export const wsActions: TWSStoreActions = {
   wsInit: WS_CONNECTION_START,
@@ -38,4 +43,6 @@ const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;
 export default store;

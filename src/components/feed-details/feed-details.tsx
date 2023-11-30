@@ -5,20 +5,17 @@ import {
   CurrencyIcon,
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../services/reducers";
+import { useAppDispatch, useSelector } from "../../services/reducers";
 import { TIngredient } from "../../types";
 import { useNavigate } from "react-router-dom";
 import { closeModal } from "../../services/reducers/modalReducer";
 
 const FeedDetails = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const withToken = useSelector((state: RootState) => state.feed.hasToken);
+  const withToken = useSelector((state) => state.feed.hasToken);
 
-  const feedDetails = useSelector(
-    (state: RootState) => state.modal.feedDetails
-  );
+  const feedDetails = useSelector((state) => state.modal.feedDetails);
   feedDetails &&
     window.history.replaceState(
       null,

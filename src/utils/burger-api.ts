@@ -197,8 +197,41 @@ export async function refreshToken() {
   });
 }
 
-export async function getOrder(id: string) {
-  const res = await fetch(`${NORMA_API}/orders/${id}`);
+export async function getOrder(id: string, hasToken: boolean) {
+  const accessToken = localStorage.getItem("accessToken");
+  if (!hasToken) {
+    const res = await fetch(`${NORMA_API}/orders/`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: accessToken ?? "",
+      },
+    });
+    let order = await checkResponse<TOrdersResponse>(res).then(({ orders }) => {
+      return orders.find(({ _id }) => _id === id);
+    });
+    if (order) return await getOrderByNumber(order?.number);
+  } else {
+    const res = await fetch(`${NORMA_API}/orders/`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: accessToken ?? "",
+      },
+    });
+    let order = await checkResponse<TOrdersResponse>(res).then(({ orders }) => {
+      return orders.find(({ _id }) => _id === id);
+    });
+    if (order)
+      return await fetch(`${NORMA_API}/orders/${order.number}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: accessToken ?? "",
+        },
+      }).then((res) => checkResponse<TOrdersResponse>(res));
+  }
+}
+
+export async function getOrderByNumber(number: number) {
+  const res = await fetch(`${NORMA_API}/orders/${number}`);
   let result = await checkResponse<TOrdersResponse>(res);
   return result;
 }

@@ -1,9 +1,8 @@
 import React, { ReactNode, MouseEvent } from "react";
 import modalOverlayStyles from "./modal-overlay.module.css";
 import { closeModal } from "../../services/reducers/modalReducer";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../../services/reducers";
+import { useAppDispatch, useSelector } from "../../services/reducers";
 import { resetOrderData } from "../../services/reducers/orderReducer";
 
 type TModalOverlay = {
@@ -11,9 +10,9 @@ type TModalOverlay = {
 };
 
 function ModalOverlay({ children }: TModalOverlay) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const modal = useSelector((state: RootState) => state.modal);
+  const modal = useSelector((state) => state.modal);
 
   const handleCloseModal = (event: MouseEvent<HTMLDivElement>) => {
     event.preventDefault();

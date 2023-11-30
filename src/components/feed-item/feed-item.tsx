@@ -6,8 +6,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { TIngredient } from "../../types";
 import { Link, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../services/reducers";
+import { useAppDispatch, useSelector } from "../../services/reducers";
 import { setFeedDetails } from "../../services/reducers/modalReducer";
 
 type TFeedItem = {
@@ -26,10 +25,10 @@ type TFeedItem = {
 const FeedItem = ({ orderData }: TFeedItem) => {
   const { number, name, ingredients, createdAt } = orderData;
 
-  const withToken = useSelector((state: RootState) => state.feed.hasToken);
+  const withToken = useSelector((state) => state.feed.hasToken);
 
   const location = useLocation();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const ingredientsList =
     ingredients &&

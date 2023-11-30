@@ -7,10 +7,9 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./login.module.css";
 import { loginUser } from "../services/reducers/userReducer";
-import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useForm } from "../hooks/useForm";
-import { AppDispatch, RootState } from "../services/reducers";
+import { useAppDispatch, useSelector } from "../services/reducers";
 
 type FormStateType = {
   email: string;
@@ -26,7 +25,7 @@ export function LoginPage() {
   const { values, handleChange } = useForm<FormStateType>(initialFormState);
   const location = useLocation();
 
-  const user = useSelector((state: RootState) => state.auth.userData);
+  const user = useSelector((state) => state.auth.userData);
   const navigate = useNavigate();
   useEffect(() => {
     if (user) {
@@ -34,7 +33,7 @@ export function LoginPage() {
     }
   }, [location?.state?.from, navigate, user]);
 
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   let login = useCallback(
     async (event: SyntheticEvent) => {

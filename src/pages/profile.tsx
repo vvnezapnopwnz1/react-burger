@@ -6,9 +6,8 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./home.module.css";
-import { useDispatch, useSelector } from "react-redux";
 import { editUser, logoutUser } from "../services/reducers/userReducer";
-import { AppDispatch, RootState } from "../services/reducers";
+import { useAppDispatch, useSelector } from "../services/reducers";
 
 enum EditFields {
   name = "name",
@@ -24,7 +23,7 @@ export function ProfilePage(): JSX.Element | null {
     password: "",
   });
   const [isEditing, setIsEditing] = useState<EditFields>(EditFields.default);
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === "password") {
       setIsEditing(EditFields.password);
@@ -32,7 +31,7 @@ export function ProfilePage(): JSX.Element | null {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const { userData } = useSelector((state: RootState) => state.auth);
+  const { userData } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (userData) {

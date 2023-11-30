@@ -4,9 +4,8 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag, DragPreviewImage } from "react-dnd";
-import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-import { RootState } from "../../services/reducers";
+import { useSelector } from "../../services/reducers";
 import { TIngredient } from "../../types";
 
 const TabItem = ({
@@ -20,7 +19,7 @@ const TabItem = ({
 
   const ingredientId = item["_id"];
 
-  const count = useSelector((state: RootState) =>
+  const count = useSelector((state) =>
     item.type !== "bun"
       ? state.order.constructorIngredients.find(
           (ingredient) => ingredient._id === item._id

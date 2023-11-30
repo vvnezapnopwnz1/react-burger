@@ -7,9 +7,8 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./home.module.css";
 import { registerUser } from "../services/reducers/userReducer";
-import { useDispatch } from "react-redux";
 import { useForm } from "../hooks/useForm";
-import { AppDispatch } from "../services/reducers";
+import { useAppDispatch } from "../services/reducers";
 
 type FormStateType = {
   name: string;
@@ -27,7 +26,7 @@ export function RegisterPage() {
   const { values, handleChange } = useForm<FormStateType>(initialFormState);
   const navigate = useNavigate();
 
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   let register = useCallback(
     async (e: SyntheticEvent) => {
       e.preventDefault();

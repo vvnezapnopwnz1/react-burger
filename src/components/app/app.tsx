@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import AppHeader from "../app-header/app-header";
-import { type RootState, type AppDispatch } from "../../services/reducers";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useSelector } from "../../services/reducers";
 import { fetchIngredients } from "../../services/reducers/ingredientsReducer";
 import { Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
 import {
@@ -24,10 +23,10 @@ import { SingleOrderPage } from "../../pages/single-order";
 import { HistoryPage } from "../../pages/history";
 
 function App() {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const background = location.state && location.state.background;
-  const modal = useSelector((state: RootState) => state.modal);
+  const modal = useSelector((state) => state.modal);
 
   useEffect(() => {
     dispatch(fetchIngredients());

@@ -1,12 +1,11 @@
 import React from "react";
 import ingredientDetailsStyles from "./home.module.css";
-import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { RootState } from "../services/reducers";
+import { useSelector } from "../services/reducers";
 
 export function IngredientPage() {
   let { pathname } = useLocation();
-  const ingredient = useSelector((state: RootState) =>
+  const ingredient = useSelector((state) =>
     state.ingredients.items.find(
       (item) => item._id === pathname.replace("/ingredients/", "")
     )

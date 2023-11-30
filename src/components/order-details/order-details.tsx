@@ -1,21 +1,20 @@
 import React from "react";
 import orderDetailsStyles from "./order-details.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../../services/reducers/modalReducer";
 import Done from "../../images/done.svg";
-import { RootState } from "../../services/reducers";
+import { useAppDispatch, useSelector } from "../../services/reducers";
 import { resetOrderData } from "../../services/reducers/orderReducer";
 
 function OrderDetails() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleCloseModal = () => {
     dispatch(resetOrderData());
     dispatch(closeModal());
   };
 
-  const { orderData, loading } = useSelector((state: RootState) => state.order);
+  const { orderData, loading } = useSelector((state) => state.order);
 
   return (
     <div className={orderDetailsStyles.details}>

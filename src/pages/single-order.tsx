@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./home.module.css";
-import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { AppDispatch, RootState } from "../services/reducers";
+import { useAppDispatch, useSelector } from "../services/reducers";
 import {
   CurrencyIcon,
   FormattedDate,
@@ -13,7 +12,7 @@ import { wsActions } from "../services/reducers";
 import { ROUTES } from "../utils/config";
 
 export function SingleOrderPage() {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   useEffect(
     () => {
@@ -26,11 +25,9 @@ export function SingleOrderPage() {
   );
 
   let { pathname } = useLocation();
-  const ingredients = useSelector(
-    (state: RootState) => state.ingredients.items
-  );
-
-  const orderInFeed = useSelector((state: RootState) =>
+  const ingredients = useSelector((state) => state.ingredients.items);
+  const hasToken = useSelector((state) => state.feed.hasToken);
+  const orderInFeed = useSelector((state) =>
     state.feed.orders.find(
       ({ _id }: { _id: string }) => _id === pathname.replace("/feed/", "")
     )
@@ -42,20 +39,18 @@ export function SingleOrderPage() {
       setFeedDetails(orderInFeed);
     } else {
       if (pathname.startsWith(ROUTES.feed)) {
-        getOrder(pathname.replace("/feed/", "")).then(({ orders }) => {
-          const [order] = orders;
-          setFeedDetails(order);
+        getOrder(pathname.replace("/feed/", ""), hasToken).then((res) => {
+          setFeedDetails(res?.orders[0]);
         });
       } else {
-        getOrder(pathname.replace("/profile/orders/", "")).then(
-          ({ orders }) => {
-            const [order] = orders;
-            setFeedDetails(order);
+        getOrder(pathname.replace("/profile/orders/", ""), hasToken).then(
+          (res) => {
+            setFeedDetails(res?.orders[0]);
           }
         );
       }
     }
-  }, [orderInFeed, pathname]);
+  }, [hasToken, orderInFeed, pathname]);
 
   const ingredientsList = feedDetails?.ingredients.map(
     (value: TIngredient) =>

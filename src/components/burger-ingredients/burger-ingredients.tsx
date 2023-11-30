@@ -1,17 +1,14 @@
 import React, { UIEvent, useMemo, useRef } from "react";
 import ingredientsStyles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector, useDispatch } from "react-redux";
 import { setIngredientDetails } from "../../services/reducers/modalReducer";
-import type { RootState, AppDispatch } from "../../services/reducers";
+import { useSelector, useAppDispatch } from "../../services/reducers";
 import TabItem from "../tab-item/tab-item";
 import { TIngredient } from "../../types";
 
 const BurgerIngredients = () => {
   const [current, setCurrent] = React.useState("Булки");
-  const ingredients = useSelector(
-    (state: RootState) => state.ingredients.items
-  );
+  const ingredients = useSelector((state) => state.ingredients.items);
   const tabRef = useRef<HTMLDivElement | null>(null);
   const [buns, sauces, main] = useMemo(() => {
     const buns = ingredients.filter((item) => item.type === "bun");
@@ -21,7 +18,7 @@ const BurgerIngredients = () => {
     return [buns, sauces, main];
   }, [ingredients]);
 
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const handleDetails = (item: TIngredient) => {
     dispatch(setIngredientDetails(item));

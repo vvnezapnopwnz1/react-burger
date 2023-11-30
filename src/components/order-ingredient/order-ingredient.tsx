@@ -4,13 +4,16 @@ import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector, useDispatch } from "react-redux";
 import {
   sortIngredients,
   setIngredients,
 } from "../../services/reducers/orderReducer";
 import { useDrop, useDrag } from "react-dnd";
-import { RootState } from "../../services/reducers";
+import {
+  RootState,
+  useAppDispatch,
+  useSelector,
+} from "../../services/reducers";
 import { TIngredient } from "../../types";
 import { Identifier } from "dnd-core";
 
@@ -20,9 +23,9 @@ type TOrderIngredient = {
 };
 
 const OrderIngredient = ({ item, index }: TOrderIngredient) => {
-  const order = useSelector((state: RootState) => state.order);
+  const order = useSelector((state) => state.order);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const handleDeleteClick = (
     item: TIngredient & { uuid: string; count: number }
   ) => {
