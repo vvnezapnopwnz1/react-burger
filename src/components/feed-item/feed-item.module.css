@@ -1,0 +1,68 @@
+.feedItem {
+    background-color: rgba(28, 28, 33, 1);
+    border-radius: 40px;
+    padding: 24px;
+    width: 584px;
+    margin-bottom: 16px;
+    margin-right: 8px;
+}
+
+.listItem img {
+    width: 175%;
+}
+
+.feedItemHistory {
+    background-color: rgba(28, 28, 33, 1);
+    border-radius: 40px;
+    padding: 24px;
+    width: 844px;
+    margin-bottom: 16px;
+    margin-right: 8px;
+}
+
+.personalFeedItem {
+    background-color: rgba(28, 28, 33, 1);
+    border-radius: 40px;
+    padding: 24px;
+    width: 844px;
+    margin-bottom: 16px;
+    margin-right: 8px;
+}
+
+.feedItemHeader {
+    display: flex;
+    justify-content: space-between;
+}
+
+.listItem {
+    border: 2px solid rgba(128, 26, 178, 1);
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 64px;
+    height: 64px;
+    background-color: rgba(19, 19, 22, 1);
+}
+
+.listItem p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.feedContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ingredientsList {
+    display: flex;
+}
+
+.ingredientsList + div {
+    display: flex;
+    gap: 4px;
+}

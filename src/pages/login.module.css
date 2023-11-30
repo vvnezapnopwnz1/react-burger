@@ -1,0 +1,17 @@
+.button {
+    width: 80%;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+.formWrapper {
+    display: flex;
+    align-items: center;
+    height: 80vh;
+    flex-direction: column;
+    justify-content: center;
+}

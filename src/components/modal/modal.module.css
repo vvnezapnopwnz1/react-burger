@@ -1,0 +1,7 @@
+.modal {
+    border-radius: 40px;
+    background-color: rgba(28, 28, 33, 1);
+    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.04), 0px 4px 8px 0px rgba(0, 0, 0, 0.04), 0px 16px 24px 0px rgba(0, 0, 0, 0.04), 0px 24px 32px 0px rgba(0, 0, 0, 0.04);
+    position: "relative";
+    z-index: 100;
+}
