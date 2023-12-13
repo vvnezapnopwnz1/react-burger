@@ -18,11 +18,12 @@ type state = {
   userData: TUser | null;
 };
 
-const initialState: state = {
+export const initialState: state = {
   userData: null,
   loading: "idle",
   error: null,
 };
+
 export const loginUser = createAsyncThunk(
   "auth/login",
   async (formData: Record<string, string>) => {
@@ -115,4 +116,4 @@ const authSlice = createSlice({
   },
 });
 
-export default authSlice.reducer;
+export default authSlice;

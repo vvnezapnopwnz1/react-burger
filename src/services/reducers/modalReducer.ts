@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { TIngredient, TOrder } from "../../types";
 
-const initialState: {
+export const initialState: {
   isOrder: boolean;
   ingredient: TIngredient | null;
   feedDetails: TOrder | null;
@@ -32,6 +32,10 @@ const modalSlice = createSlice({
   },
 });
 
-export const { setIngredientDetails, setOrderDetails, closeModal, setFeedDetails } =
-  modalSlice.actions;
-export default modalSlice.reducer;
+export const {
+  setIngredientDetails,
+  setOrderDetails,
+  closeModal,
+  setFeedDetails,
+} = modalSlice.actions;
+export default modalSlice;

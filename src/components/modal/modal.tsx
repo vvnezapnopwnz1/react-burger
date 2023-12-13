@@ -39,7 +39,9 @@ export function Modal({ children }: TModal) {
 
   return createPortal(
     <ModalOverlay>
-      <div className={modalStyles.modal}>{children}</div>
+      <div data-cy="order-modal" className={modalStyles.modal}>
+        {children}
+      </div>
     </ModalOverlay>,
     document.body
   );

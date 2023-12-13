@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import ingredients from "./ingredientsReducer";
-import order from "./orderReducer";
-import modal from "./modalReducer";
-import auth from "./userReducer";
+import ingredientsSlice from "./ingredientsReducer";
+import orderSlice from "./orderReducer";
+import modalSlice from "./modalReducer";
+import authSlice from "./userReducer";
 import { wsReducer as feed } from "./wsReducer";
 import { socketMiddleware } from "../socketMiddleware";
 import { WSS_API } from "../../utils/config";
@@ -31,7 +31,7 @@ export const wsActions: TWSStoreActions = {
 };
 
 const store = configureStore({
-  reducer: { ingredients, order, modal, auth, feed },
+  reducer: { ingredients: ingredientsSlice.reducer, order: orderSlice.reducer, modal: modalSlice.reducer, auth: authSlice.reducer, feed },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,

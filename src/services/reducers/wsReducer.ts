@@ -16,7 +16,7 @@ type TWSState = {
   hasToken: boolean;
 };
 
-const initialState: TWSState = {
+export const initialState: TWSState = {
   wsConnected: false,
   orders: [],
   total: 0,

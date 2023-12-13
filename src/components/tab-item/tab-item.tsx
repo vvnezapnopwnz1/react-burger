@@ -44,13 +44,19 @@ const TabItem = ({
     >
       <DragPreviewImage connect={preview} src={item.image} />
       <div
+        data-cy="ingredients"
         ref={drag}
         onClick={() => handleDetails(item)}
         key={item._id}
         className={tabItemStyles.ingredientsItem}
       >
         {count && count > 0 && (
-          <Counter count={count && count} size="default" extraClass="m-1" />
+          <Counter
+            count={count && count}
+            size="default"
+            extraClass="m-1"
+
+          />
         )}
         <img alt={item.name} src={item.image} />
         <div className={`${tabItemStyles.price} m-1`}>

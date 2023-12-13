@@ -16,10 +16,7 @@ import OrderIngredient from "../order-ingredient/order-ingredient";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../../services/reducers/userReducer";
-import {
-  useSelector,
-  useAppDispatch,
-} from "../../services/reducers";
+import { useSelector, useAppDispatch } from "../../services/reducers";
 import { TIngredient } from "../../types";
 
 const BurgerConstructor = () => {
@@ -44,6 +41,7 @@ const BurgerConstructor = () => {
   const nonDragableItem = (type: "top" | "bottom") =>
     order.bun && (
       <div
+        data-cy="dropped-bun"
         key={`${order.bun._id}-${type}`}
         className={constructorStyles.element}
       >
@@ -141,7 +139,11 @@ const BurgerConstructor = () => {
   );
   return (
     <section className="mt-25 mr-15 ml-10">
-      <div ref={drop} className={`${constructorStyles.listItemsAll}`}>
+      <div
+        ref={drop}
+        className={`${constructorStyles.listItemsAll}`}
+        data-cy="constructor"
+      >
         {nonDragableItem("top")}
         <div className={constructorStyles.listItems}>
           {order.constructorIngredients &&
@@ -158,6 +160,7 @@ const BurgerConstructor = () => {
         </div>
         <Button
           onClick={handleOrderClick}
+          data-cy="order-button"
           htmlType="button"
           type="primary"
           size="large"

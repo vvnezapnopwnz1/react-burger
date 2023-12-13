@@ -17,7 +17,7 @@ type state = {
   error: null | SerializedError;
 };
 
-const initialState: state = {
+export const initialState: state = {
   items: [],
   loading: "idle",
   error: null,
@@ -43,4 +43,4 @@ const ingredientsSlice = createSlice({
   },
 });
 
-export default ingredientsSlice.reducer;
+export default ingredientsSlice;

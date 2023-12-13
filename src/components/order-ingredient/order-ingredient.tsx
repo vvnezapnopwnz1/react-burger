@@ -105,16 +105,22 @@ const OrderIngredient = ({ item, index }: TOrderIngredient) => {
       ref={ref}
       key={item._id}
       className={constructorStyles.element}
+      data-cy="dropped-el"
     >
       <DragIcon type="primary" />
-      <ConstructorElement
-        extraClass="ml-4 mr-2"
-        isLocked={false}
-        handleClose={() => handleDeleteClick(item)}
-        text={item.name}
-        price={item.price}
-        thumbnail={item.image}
-      />
+      <button
+        data-cy="el-delete"
+        onClick={() => handleDeleteClick(item)}
+        className={constructorStyles.deleteButton}
+      >
+        <ConstructorElement
+          extraClass="ml-4 mr-2"
+          isLocked={false}
+          text={item.name}
+          price={item.price}
+          thumbnail={item.image}
+        />
+      </button>
     </div>
   );
 };

@@ -85,4 +85,4 @@ const orderSlice = createSlice({
 
 export const { setIngredients, setBun, sortIngredients, resetOrderData } =
   orderSlice.actions;
-export default orderSlice.reducer;
+export default orderSlice;

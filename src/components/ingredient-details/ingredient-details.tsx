@@ -26,10 +26,21 @@ function IngredientDetails() {
       <div className={ingredientDetailsStyles.ingredient}>
         <div className={ingredientDetailsStyles.ingredientHeader}>
           <p className="text text_type_main-medium">Детали ингредиента</p>
-          <CloseIcon type="primary" onClick={handleCloseModal} />
+          <button
+            className={ingredientDetailsStyles.closeButton}
+            onClick={handleCloseModal}
+            data-cy="modal-close"
+          >
+            <CloseIcon data-cy="modal-close" type="primary" />
+          </button>
         </div>
         <img src={ingredient.image_large} alt={ingredient.name} />
-        <p className="text text_type_main-small mt-4 mb-8">{ingredient.name}</p>
+        <p
+          data-cy="modal-ingredients"
+          className="text text_type_main-small mt-4 mb-8"
+        >
+          {ingredient.name}
+        </p>
         <div
           className={`${ingredientDetailsStyles.ingredientProps} text text_type_main-small text_color_inactive`}
         >
