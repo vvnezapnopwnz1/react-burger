@@ -1,3 +1,7 @@
+## Deployed via Github Pages
+
+[https://vvnezapnopwnz1.github.io/react-burger/](https://vvnezapnopwnz1.github.io/react-burger/)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
