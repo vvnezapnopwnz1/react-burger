@@ -1,0 +1,170 @@
+.ingredient {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.ingredientHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ingredient>p {
+    align-self: center;
+}
+
+.ingredientProps {
+    display: flex;
+    gap: 20px;
+}
+
+.ingredientProps div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.formWrapper {
+    display: flex;
+    align-items: center;
+    height: 80vh;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.button {
+    width: 60%;
+}
+
+.registerButton {
+    width: 80%;
+}
+
+.profile {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.profileContent {
+    display: flex;
+}
+
+.profileNav {
+    display: flex;
+    flex-direction: column;
+}
+
+.profileFormWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.profileForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.feed {
+    display: flex;
+    flex-direction: column;
+}
+
+.feedContent {
+    display: flex;
+    gap: 36px;
+    margin-top: 20px;
+}
+
+.order {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    margin-right: 24px;
+    align-items: center;
+}
+
+.listItem {
+    border: 2px solid rgba(128, 26, 178, 1);
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 64px;
+    height: 64px;
+    background-color: rgba(19, 19, 22, 1);
+}
+
+
+.itemContent {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.ingredientsList {
+    max-height: 31vh;
+    overflow: auto;
+}
+
+.ingredientsList::-webkit-scrollbar {
+    width: 8px;
+}
+
+.ingredientsList::-webkit-scrollbar-track {
+    background: rgba(47, 47, 55, 1);
+
+}
+
+.ingredientsList::-webkit-scrollbar-thumb {
+    background-color: rgba(76, 76, 255, 1);
+}
+
+.listItemFooter {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 24px;
+}
+
+.listItemFooter p {
+    word-break: normal;
+}
+
+.orderContent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 640px;
+    padding: 24px;
+}
+
+.orderContent>p:first-child {
+    align-self: center;
+}
+
+.orderFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.orderFooter div:last-child {
+    display: flex;
+    gap: 4px;
+}

@@ -1,0 +1,38 @@
+.ingredient {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
+}
+
+.ingredientHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ingredient>p {
+    align-self: center;
+}
+
+.ingredientProps {
+    display: flex;
+    gap: 20px;
+}
+
+.ingredientProps div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.closeButton {
+    background: none;
+    box-shadow: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}

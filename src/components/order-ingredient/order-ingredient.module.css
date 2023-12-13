@@ -1,0 +1,12 @@
+.element {
+    display: flex;
+    align-items: center;
+}
+
+.deleteButton {
+    background: none;
+    box-shadow: none;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
